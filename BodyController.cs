@@ -6,6 +6,7 @@ public class BodyController : MonoBehaviour {
     
     public float speed = 1;
     private Rigidbody2D selfRigidbody;
+    private LineRenderer line;
 	// Update is called once per frame
     void Awake() {
         selfRigidbody = GetComponent<Rigidbody2D>();
@@ -27,5 +28,9 @@ public class BodyController : MonoBehaviour {
         if (angle < 0)
             angle +=  360;
         transform.eulerAngles = new Vector3(0, 0, -angle);
+    }
+    
+    protected void Shoot() {
+        
     }
 }
