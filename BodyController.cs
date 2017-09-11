@@ -47,6 +47,8 @@ public class BodyController : MonoBehaviour {
     protected cTrajectory Shoot() {
         if (selfWeapon == null)
             return null;
+        if (!selfWeapon.ReadyToFire())
+            return null;
         
         cTrajectory tmpTra = new cTrajectory();
         //first shot
@@ -65,6 +67,9 @@ public class BodyController : MonoBehaviour {
         
         Debug.DrawLine(tmpTra.startPos, tmpTra.endPos, selfWeapon.fireMaterial.color);
         drawQueue.Enqueue(tmpTra);
+        
+        selfWeapon.Fire();
+        
         return tmpTra;
     }
     
@@ -88,6 +93,7 @@ public class BodyController : MonoBehaviour {
         {
             //alpha get lower when time pass by
             GL.Color(new Color(fireColor.r, fireColor.g, fireColor.b, fireColor.a * t.time / selfWeapon.flyingTime));
+            // GL.Color(new Color(fireColor.r, fireColor.g, fireColor.b, 0.4f));
             GL.Vertex(t.startPos);
             GL.Vertex(t.endPos);
             // GL.Vertex(new Vector3(0, 0, 0));
