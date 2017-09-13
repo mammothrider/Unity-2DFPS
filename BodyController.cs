@@ -5,16 +5,17 @@ using UnityEngine;
 public class BodyController : MonoBehaviour {
     
     public float speed = 1;
-    private Rigidbody2D selfRigidbody;
-    private LineRenderer line;
-    private Weapon selfWeapon;
-    private const float selfRadius = 0.2f;
     
-    private Queue<cTrajectory> drawQueue;
+    public float health = 100;
+    
+    private Rigidbody2D selfRigidbody;
+    private Weapon selfWeapon;
+    private const float selfRadius = 0.3f;
+    
+    
 	// Update is called once per frame
     void Awake() {
         selfRigidbody = GetComponent<Rigidbody2D>();
-        drawQueue = new Queue<cTrajectory>();
         GetWeapon(GameObject.Find("Gun"));
     }
     
@@ -33,7 +34,8 @@ public class BodyController : MonoBehaviour {
             angle = 180 + angle;
         if (angle < 0)
             angle +=  360;
-        transform.eulerAngles = new Vector3(0, 0, -angle);
+        // transform.eulerAngles = new Vector3(0, 0, -angle);
+        selfRigidbody.MoveRotation(-angle);
     }
     
     protected void GetWeapon(GameObject weapon) {
@@ -44,71 +46,22 @@ public class BodyController : MonoBehaviour {
         selfWeapon = null;
     }
     
-    protected cTrajectory Shoot() {
-        if (selfWeapon == null)
-            return null;
-        if (!selfWeapon.ReadyToFire())
-            return null;
+    protected void Shoot() {
+        if (!selfWeapon || !selfWeapon.ReadyToFire())
+            return;
         
-        cTrajectory tmpTra = new cTrajectory();
-        //first shot
-        if (drawQueue.Count == 0) {
-            //self postion + radius
-            tmpTra.startPos = transform.position + transform.up * selfRadius;
-        }
-        else {
-            // + random start position around the gun
-            tmpTra.startPos = transform.position + transform.up * selfRadius + transform.right * Random.Range(-1f, 1f) * selfWeapon.startPrecision;
-        }
+        cTrajectory tmpTra = selfWeapon.Fire(transform, selfRadius);
+        // PushBody(selfWeapon.recoil, tmpTra.startPos, tmpTra.startPos - tmpTra.endPos);
         
-        tmpTra.endPos = tmpTra.startPos + transform.up * selfWeapon.attackRange + transform.right * Random.Range(-1f, 1f) * selfWeapon.endPrecision;
-        
-        tmpTra.time = selfWeapon.flyingTime;
-        
-        Debug.DrawLine(tmpTra.startPos, tmpTra.endPos, selfWeapon.fireMaterial.color);
-        drawQueue.Enqueue(tmpTra);
-        
-        selfWeapon.Fire();
-        
-        return tmpTra;
     }
     
-    public void OnRenderObject()
-    {
-        if (drawQueue.Count < 0)
-            return;
-        // Apply the line material
-        selfWeapon.fireMaterial.SetPass(0);
-        Color fireColor = selfWeapon.fireMaterial.color;
-
-        // GL.PushMatrix();
-        // Set transformation matrix for drawing to
-        // match our transform
-        // GL.MultMatrix(transform.localToWorldMatrix);
-
-        // Draw lines
-        GL.Begin(GL.LINES);
-        
-        foreach (cTrajectory t in drawQueue)
-        {
-            //alpha get lower when time pass by
-            GL.Color(new Color(fireColor.r, fireColor.g, fireColor.b, fireColor.a * t.time / selfWeapon.flyingTime));
-            // GL.Color(new Color(fireColor.r, fireColor.g, fireColor.b, 0.4f));
-            GL.Vertex(t.startPos);
-            GL.Vertex(t.endPos);
-            // GL.Vertex(new Vector3(0, 0, 0));
-            // GL.Vertex(new Vector3(0, 1, 0));
-            
-            //decrease trajectory last time
-            t.time -= Time.deltaTime;
-        }
-        
-        //pop every trajectory that time is less than 0
-        while (drawQueue.Count > 0 && drawQueue.Peek().time < 0) {
-                drawQueue.Dequeue();
-        }
-        
-        GL.End();
-        // GL.PopMatrix();
+    public void GetShot(Weapon shooter, Vector2 hitPosition, Vector2 direction) {
+        health -= shooter.attackDamage;
+        PushBody(shooter.recoil, hitPosition, direction);
+    }
+    
+    public void PushBody(float force, Vector2 position, Vector2 direction) {
+        // Debug.DrawRay(position, direction * force, Color.yellow);
+        selfRigidbody.AddForceAtPosition(direction.normalized * force, position);
     }
 }

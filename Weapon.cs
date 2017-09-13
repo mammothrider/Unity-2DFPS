@@ -16,13 +16,19 @@ public class Weapon : MonoBehaviour {
     public float reloadTime = 5f;
     
     public Material fireMaterial;
+    public Color fireColor;
+    
+    public float recoil = 1f;
     
     private float _cooldown = 0;
     private float _reload = 0;
     private int _magazine = 0;
     
-    void Start() {
+    private Queue<cTrajectory> drawQueue;
+    
+    void Awake() {
         _magazine = magazine;
+        drawQueue = new Queue<cTrajectory>();
     }
     
     void FixedUpdate() {
@@ -41,11 +47,48 @@ public class Weapon : MonoBehaviour {
         return false;
     }
     
-    public void Fire() {
-        if (ReadyToFire()) {
-            _magazine -= 1;
-            _cooldown = coolDownTime;
+    public cTrajectory Fire(Transform shooter, float radius) {
+        if (!ReadyToFire())
+            return null;
+        
+        _magazine -= 1;
+        _cooldown = coolDownTime;
+        
+        
+        cTrajectory tmpTra = new cTrajectory();
+        //first shot
+        if (drawQueue.Count == 0) {
+            //self postion + radius
+            tmpTra.startPos = shooter.position + shooter.up * radius;
         }
+        else {
+            // + random start position around the gun
+            tmpTra.startPos = shooter.position + shooter.up * radius + shooter.right * Random.Range(-1f, 1f) * startPrecision;
+        }
+        
+        //no collision end position
+        tmpTra.endPos = tmpTra.startPos + shooter.up * attackRange + shooter.right * Random.Range(-1f, 1f) * endPrecision;
+        
+        //recoil
+        shooter.GetComponent<BodyController>().PushBody(recoil, tmpTra.startPos, tmpTra.startPos - tmpTra.endPos);
+        
+        //find collision
+        RaycastHit2D hit = Physics2D.Linecast(tmpTra.startPos, tmpTra.endPos);
+        if (hit) {
+            tmpTra.endPos = hit.point;
+            //get shot, push back
+            if (hit.rigidbody != null) {
+                BodyController controller = hit.rigidbody.GetComponent<BodyController>();
+                if (controller)
+                    controller.GetShot(this, tmpTra.endPos, tmpTra.endPos - tmpTra.startPos);
+            }
+        }
+        
+        tmpTra.time = flyingTime;
+        
+        drawQueue.Enqueue(tmpTra);
+        
+        return tmpTra;
     }
     
     public void Reload() {
@@ -53,4 +96,43 @@ public class Weapon : MonoBehaviour {
         _magazine = magazine;
     }
     
+    
+    //Gun fire trajectory rendering
+    public void OnRenderObject()
+    {
+        if (drawQueue.Count < 0)
+            return;
+        // Apply the line material
+        fireMaterial.SetPass(0);
+
+        // GL.PushMatrix();
+        // Set transformation matrix for drawing to
+        // match our transform
+        // GL.MultMatrix(transform.localToWorldMatrix);
+
+        // Draw lines
+        GL.Begin(GL.LINES);
+        
+        foreach (cTrajectory t in drawQueue)
+        {
+            //alpha get lower when time pass by
+            Color tmpColor = new Color(fireColor.r, fireColor.g, fireColor.b, fireColor.a * t.time / flyingTime);
+            GL.Color(tmpColor);
+            GL.Vertex(t.startPos);
+            GL.Vertex(t.endPos);
+            
+            //decrease trajectory last time
+            t.time -= Time.deltaTime;
+            
+            Debug.DrawLine(t.startPos, t.endPos, tmpColor);
+        }
+        
+        GL.End();
+        // GL.PopMatrix();
+        
+        //pop every trajectory that time is less than 0
+        while (drawQueue.Count > 0 && drawQueue.Peek().time < 0) {
+                drawQueue.Dequeue();
+        }
+    }
 }
