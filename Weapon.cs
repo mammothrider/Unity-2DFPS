@@ -47,9 +47,11 @@ public class Weapon : MonoBehaviour {
         return false;
     }
     
-    public cTrajectory Fire(Transform shooter, float radius) {
+    //transform for direction, and direction is always transform.up
+    //radius for position
+    public void Fire(Transform shooter, float radius) {
         if (!ReadyToFire())
-            return null;
+            return;
         
         _magazine -= 1;
         _cooldown = coolDownTime;
@@ -79,16 +81,15 @@ public class Weapon : MonoBehaviour {
             //get shot, push back
             if (hit.rigidbody != null) {
                 BodyController controller = hit.rigidbody.GetComponent<BodyController>();
-                if (controller)
+                if (controller) {
                     controller.GetShot(this, tmpTra.endPos, tmpTra.endPos - tmpTra.startPos);
+                }
             }
         }
         
         tmpTra.time = flyingTime;
         
         drawQueue.Enqueue(tmpTra);
-        
-        return tmpTra;
     }
     
     public void Reload() {

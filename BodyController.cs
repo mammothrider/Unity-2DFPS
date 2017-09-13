@@ -50,7 +50,8 @@ public class BodyController : MonoBehaviour {
         if (!selfWeapon || !selfWeapon.ReadyToFire())
             return;
         
-        cTrajectory tmpTra = selfWeapon.Fire(transform, selfRadius);
+        selfWeapon.Fire(transform, selfRadius);
+        // cTrajectory tmpTra = selfWeapon.Fire(transform, selfRadius);
         // PushBody(selfWeapon.recoil, tmpTra.startPos, tmpTra.startPos - tmpTra.endPos);
         
     }
@@ -61,7 +62,8 @@ public class BodyController : MonoBehaviour {
     }
     
     public void PushBody(float force, Vector2 position, Vector2 direction) {
-        // Debug.DrawRay(position, direction * force, Color.yellow);
+        // Debug.DrawRay(position, direction.normalized * force / 100, Color.yellow, 1);
+        // Debug.Log(direction.normalized * force);
         selfRigidbody.AddForceAtPosition(direction.normalized * force, position);
     }
 }
