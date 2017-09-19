@@ -4,26 +4,11 @@ using UnityEngine;
 
 public class EnemyController : BodyController {
     
-    public float raycastDegree = 2;
+    public float raycastDegree = 20;
     public float visionField = 2;
 
 	void FixedUpdate () {
-		float ver = Input.GetAxis("Vertical");
-		float hor = Input.GetAxis("Horizontal");
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0;
-        
-        Vector3 direction = (Vector3.up * ver + Vector3.right * hor) * speed * Time.deltaTime;
-        // transform.position += (transform.up * ver + transform.right * hor) * speed * Time.deltaTime;
-        // transform.position += (Vector3.up * ver + Vector3.right * hor) * speed * Time.deltaTime;
-        MoveTowards(direction);
-        // Debug.Log(direction);
-        
-        Vector3 targetDirection = mousePos - transform.position;
-        AimAt(targetDirection);
-        
-        if (Input.GetMouseButton(0))
-            Shoot();
+		Search();
 	}
     
     //巡逻
@@ -33,8 +18,21 @@ public class EnemyController : BodyController {
     //搜索
     //寻找敌人，并准备攻击
     void Search() {
-        Vector3 targetDirection;
-        while 
+        Vector2 targetDirection;
+        Vector2 curDirection = transform.up;
+        Vector2 selfPosition = new Vector2(transform.position.x, transform.position.y);
+        Vector2 startPos, endPos;
+        RaycastHit2D hit;
+        int count = 0;
+        while (count < 360 / raycastDegree) {
+            startPos = selfPosition + curDirection * selfRadius;
+            endPos = startPos + curDirection * visionField;
+            hit = Physics2D.Linecast(startPos, endPos);
+            Debug.DrawLine(startPos, endPos, Color.red);
+            
+            curDirection = Quaternion.Euler(0, 0, raycastDegree) * curDirection;
+            count += 1;
+        }
     }
     
     //战斗

@@ -10,7 +10,7 @@ public class BodyController : MonoBehaviour {
     
     private Rigidbody2D selfRigidbody;
     private Weapon selfWeapon;
-    private const float selfRadius = 0.3f;
+    protected const float selfRadius = 0.3f;
     
     
 	// Update is called once per frame
