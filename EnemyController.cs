@@ -7,9 +7,15 @@ public class EnemyController : BodyController {
     public float raycastDegree = 20;
     public float visionField = 2;
 
-	void FixedUpdate () {
-		Search();
-	}
+    private List<RaycastHit2D> hitList;
+    
+    protected override void OnAwake() {
+        hitList = new List<RaycastHit2D>();
+    }
+    
+	protected override void OnFixedUpdate() {
+        Search();
+    }
     
     //巡逻
     //在固定点间来回移动
@@ -29,6 +35,9 @@ public class EnemyController : BodyController {
             endPos = startPos + curDirection * visionField;
             hit = Physics2D.Linecast(startPos, endPos);
             Debug.DrawLine(startPos, endPos, Color.red);
+            
+            if (hit)
+                hitList.Add(hit);
             
             curDirection = Quaternion.Euler(0, 0, raycastDegree) * curDirection;
             count += 1;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : BodyController {
-	void FixedUpdate () {
+	protected override void OnFixedUpdate () {
 		float ver = Input.GetAxis("Vertical");
 		float hor = Input.GetAxis("Horizontal");
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

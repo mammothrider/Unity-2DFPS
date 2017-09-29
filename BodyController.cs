@@ -7,6 +7,10 @@ public class BodyController : MonoBehaviour {
     public float speed = 1;
     
     public float health = 100;
+    public bool death = false;
+    
+    public Sprite deadBody;
+    private Sprite normalBody;
     
     private Rigidbody2D selfRigidbody;
     private Weapon selfWeapon;
@@ -16,8 +20,28 @@ public class BodyController : MonoBehaviour {
 	// Update is called once per frame
     void Awake() {
         selfRigidbody = GetComponent<Rigidbody2D>();
-        GetWeapon(GameObject.Find("Gun"));
+        normalBody = GetComponent<SpriteRenderer>().sprite;
+        
+        OnAwake();
     }
+    
+    protected virtual void OnAwake() {}
+    
+    void Start() {
+        Transform tmp = transform.Find("Gun");
+        if (tmp)
+            GetWeapon(tmp.GetComponent<Weapon>());
+    }
+    
+    void FixedUpdate() {
+        if (health < 0)
+            Dead();
+        
+        if (!death)
+            OnFixedUpdate();
+    }
+    
+    protected virtual void OnFixedUpdate() {}
     
     protected void MoveTowards(Vector3 direction) {
         selfRigidbody.MovePosition(transform.position + direction);
@@ -38,8 +62,9 @@ public class BodyController : MonoBehaviour {
         selfRigidbody.MoveRotation(-angle);
     }
     
-    protected void GetWeapon(GameObject weapon) {
-        selfWeapon = weapon.GetComponent<Weapon>();
+    protected void GetWeapon(Weapon weapon) {
+        if (weapon)
+            selfWeapon = weapon;
     }
     
     protected void LoseWeapon() {
@@ -65,5 +90,14 @@ public class BodyController : MonoBehaviour {
         // Debug.DrawRay(position, direction.normalized * force / 100, Color.yellow, 1);
         // Debug.Log(direction.normalized * force);
         selfRigidbody.AddForceAtPosition(direction.normalized * force, position);
+    }
+    
+    public void Dead() {
+        if (!death) {
+            Debug.Log("Dead!");
+            GetComponent<SpriteRenderer>().sprite = deadBody;
+            death = true;
+            selfRigidbody.freezeRotation = true;
+        }
     }
 }
