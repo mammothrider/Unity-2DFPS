@@ -1,0 +1,877 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">body { margin-left:0;margin-right:0;margin-top:0; }#google-cache-hdr {background:#f5f5f5 !important;font:13px arial,sans-serif !important;text-align:left !important;color:#202020 !important;border:0 !important;margin:0 !important;border-bottom:1px solid #cecece !important;line-height:16px !important ;padding:16px 28px 24px 28px !important;}#google-cache-hdr * {display:inline !important;font:inherit !important;text-align:inherit !important;color:inherit !important;line-height:inherit !important;background:none !important;border:0 !important;margin:0 !important;padding:0 !important;letter-spacing:0 !important;}#google-cache-hdr a {text-decoration:none !important;color:#1a0dab !important;}#google-cache-hdr a:hover { text-decoration:underline !important; }#google-cache-hdr a:visited { color:#609 !important; }#google-cache-hdr div { display:block !important;margin-top:4px !important; }#google-cache-hdr b {font-weight:bold !important;display:inline-block !important;direction:ltr !important;}pre { word-wrap:break-word; }pre { white-space:pre-wrap; }</style><div id="google-cache-hdr"  dir=ltr><div>This is the html version of the file <a href="http://drops.dagstuhl.de/opus/volltexte/2013/4333/pdf/4.pdf" dir="ltr">http://drops.dagstuhl.de/opus/volltexte/2013/4333/pdf/4.pdf</a>.<br><b>Google</b> automatically generates html versions of documents as we crawl the web.</div></div><div style="position:relative;margin:8px;">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="Creator" content="LaTeX with hyperref package">
+<meta name="Producer" content="pdfTeX-1.40.13">
+<meta name="CreationDate" content="D:20131111134130+01&#39;00&#39;">
+<meta name="ModDate" content="D:20131111134130+01&#39;00&#39;">
+<meta name="Fullbanner" content="This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) kpathsea version 6.1.0">
+<title>Pathfinding in Games</title>
+</head><body  bgcolor=#ffffff vlink="blue" link="blue">
+<table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=1><b>Page 1</b></a></font></td></tr></table><font size=4 face="Times"><span style="font-size:23px;font-family:Times">
+<div style="position:absolute;top:292;left:136"><nobr><b>Pathfinding in Games</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:342;left:136"><nobr><b>Adi Botea<font style="font-size:9px">1</font>, Bruno Bouzy<font style="font-size:9px">2</font>, Michael Buro<font style="font-size:9px">3</font>, Christian Bauckhage<font style="font-size:9px">4</font>,</b></nobr></div>
+<div style="position:absolute;top:363;left:136"><nobr><b>and Dana Nau<font style="font-size:9px">5</font></b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:402;left:136"><nobr><b>1</b></nobr></div>
+<div style="position:absolute;top:402;left:166"><nobr><b>IBM Research, Dublin, Ireland</b></nobr></div>
+<div style="position:absolute;top:422;left:166"><nobr><b>adibotea@ie.ibm.com</b></nobr></div>
+<div style="position:absolute;top:439;left:136"><nobr><b>2</b></nobr></div>
+<div style="position:absolute;top:439;left:166"><nobr><b>Université Paris Descartes, France</b></nobr></div>
+<div style="position:absolute;top:458;left:166"><nobr><b>bruno.bouzy@parisdescartes.fr</b></nobr></div>
+<div style="position:absolute;top:476;left:136"><nobr><b>3</b></nobr></div>
+<div style="position:absolute;top:476;left:166"><nobr><b>University of Alberta, Canada</b></nobr></div>
+<div style="position:absolute;top:495;left:166"><nobr><b>mburo@cs.ualberta.ca</b></nobr></div>
+<div style="position:absolute;top:513;left:136"><nobr><b>4</b></nobr></div>
+<div style="position:absolute;top:513;left:166"><nobr><b>Fraunhofer IAIS, 53754 Sankt Augustin, Germany</b></nobr></div>
+<div style="position:absolute;top:532;left:166"><nobr><b>christian.bauckhage@iais.fraunhofer.de</b></nobr></div>
+<div style="position:absolute;top:549;left:136"><nobr><b>5</b></nobr></div>
+<div style="position:absolute;top:549;left:166"><nobr><b>University of Maryland, USA</b></nobr></div>
+<div style="position:absolute;top:569;left:166"><nobr><b>nau@cs.umd.edu</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:628;left:172"><nobr><b>Abstract</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:653;left:136"><nobr>Commercial games can be an excellent testbed to artificial intelligence (AI) research, being a</nobr></div>
+<div style="position:absolute;top:672;left:136"><nobr>middle ground between synthetic, highly abstracted academic benchmarks, and more intricate</nobr></div>
+<div style="position:absolute;top:691;left:136"><nobr>problems from real life. Among the many AI techniques and problems relevant to games, such</nobr></div>
+<div style="position:absolute;top:709;left:136"><nobr>as learning, planning, and natural language processing, pathfinding stands out as one of the</nobr></div>
+<div style="position:absolute;top:728;left:136"><nobr>most common applications of AI research to games. In this document we survey recent work in</nobr></div>
+<div style="position:absolute;top:747;left:136"><nobr>pathfinding in games. Then we identify some challenges and potential directions for future work.</nobr></div>
+<div style="position:absolute;top:765;left:136"><nobr>This chapter summarizes the discussions held in the pathfinding workgroup.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:804;left:136"><nobr><b>1998 ACM Subject Classification </b><font color="#000000">I.2.8 Problem Solving, Control Methods, and Search</font></nobr></div>
+<div style="position:absolute;top:842;left:136"><nobr><b>Keywords and phrases </b><font color="#000000">path finding, search, games</font></nobr></div>
+<div style="position:absolute;top:881;left:136"><nobr><b>Digital Object Identifier </b><font color="#000000"><a href="http://dx.doi.org/10.4230/DFU.Vol6.12191.21">10.4230/DFU.Vol6.12191.21</a></font></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:926;left:144"><nobr><b>1</b></nobr></div>
+<div style="position:absolute;top:926;left:181"><nobr><b>Introduction</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:964;left:136"><nobr>Pathfinding is an important application of artificial intelligence to commercial games. Des-</nobr></div>
+<div style="position:absolute;top:984;left:136"><nobr>pite a significant progress seen in recent years, the problem continues to constantly attract</nobr></div>
+<div style="position:absolute;top:1003;left:136"><nobr>researchers’ attention, which is explained in part by the high performance demands that</nobr></div>
+<div style="position:absolute;top:1023;left:136"><nobr>pathfinding implementations have to satisfy in a game. Pathfinding engines are allocated</nobr></div>
+<div style="position:absolute;top:1042;left:136"><nobr>limited CPU and memory resources. Moves have to be computed in real time, and often</nobr></div>
+<div style="position:absolute;top:1061;left:136"><nobr>there are many mobile units to compute paths for. Paths have to look sufficiently real-</nobr></div>
+<div style="position:absolute;top:1081;left:136"><nobr>istic to a user. Besides a more standard, single-agent pathfinding search on a fully known,</nobr></div>
+<div style="position:absolute;top:1100;left:136"><nobr>static map, games feature more complicated variations of the problem, such as multi-agent</nobr></div>
+<div style="position:absolute;top:1120;left:136"><nobr>pathfinding, adversarial pathfinding, dynamic changes in the environment, heterogeneous</nobr></div>
+<div style="position:absolute;top:1139;left:136"><nobr>terrains and mobile units, incomplete information, and combinations of these.</nobr></div>
+<div style="position:absolute;top:1159;left:158"><nobr>This chapter looks at games pathfinding research, with an emphasis towards the future.</nobr></div>
+<div style="position:absolute;top:1179;left:136"><nobr>It summarizes the discussions held in the Pathfinding Workgroup at the Dagstuhl Seminar</nobr></div>
+<div style="position:absolute;top:1198;left:136"><nobr>on Computational and Artificial Intelligence in Games. A shorter summary of the group’s</nobr></div>
+<div style="position:absolute;top:1218;left:136"><nobr>findings is available as part of a report on the entire seminar [<a href="#11">24]</a>. The first half of this</nobr></div>
+<div style="position:absolute;top:1237;left:136"><nobr>document overviews recent progress in the area. Then, current challenges and future work</nobr></div>
+<div style="position:absolute;top:1257;left:136"><nobr>directions are discussed.</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:1284;left:201"><nobr>© Adi Botea, Bruno Bouzy, Michael Buro, Christian Bauckhage, and Dana Nau;</nobr></div>
+<div style="position:absolute;top:1296;left:201"><nobr>licensed under Creative Commons License CC-BY</nobr></div>
+<div style="position:absolute;top:1308;left:136"><nobr>Artificial and Computational Intelligence in Games. <i>Dagstuhl Follow-Ups</i>, Volume 6,<a href="http://www.dagstuhl.de/dagpub/978-3-939897-62-0"> ISBN 978-3-939897-62-0.</a></nobr></div>
+<div style="position:absolute;top:1320;left:136"><nobr>Editors: Simon M. Lucas, Michael Mateas, Mike Preuss, Pieter Spronck, and Julian Togelius; pp. 21<a href="#11">–31</a></nobr></div>
+<div style="position:absolute;top:1332;left:251"><nobr>Dagstuhl Publishing</nobr></div>
+<div style="position:absolute;top:1344;left:251"><nobr>Schloss Dagstuhl – Leibniz-Zentrum für Informatik, Germany</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:1437;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=2><b>Page 2</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:1532;left:94"><nobr><b>22</b></nobr></div>
+<div style="position:absolute;top:1532;left:162"><nobr><b>Pathfinding in Games</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:1589;left:169"><nobr><b>2</b></nobr></div>
+<div style="position:absolute;top:1589;left:206"><nobr><b>Survey of Pathfinding Methods</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:1627;left:162"><nobr>We start by indicating a popular, baseline approach to pathfinding. The three key elements</nobr></div>
+<div style="position:absolute;top:1646;left:162"><nobr>of the baseline approach are a graph representation of a map, a search algorithm, and a</nobr></div>
+<div style="position:absolute;top:1666;left:162"><nobr>heuristic function to guide the search. Grid maps are a popular way of discretizing a game</nobr></div>
+<div style="position:absolute;top:1685;left:162"><nobr>map into a search graph. As part of the process, a map is partitioned into atomic square</nobr></div>
+<div style="position:absolute;top:1704;left:162"><nobr>cells, sometimes called tiles. Depending on the map initial topology, a tile is marked as either</nobr></div>
+<div style="position:absolute;top:1724;left:162"><nobr>traversable or blocked. A mobile unit can occupy one traversable tile at a time. Traversable</nobr></div>
+<div style="position:absolute;top:1743;left:162"><nobr>tiles become nodes in the search graph. Graph edges connect adjacent traversable tiles.</nobr></div>
+<div style="position:absolute;top:1763;left:162"><nobr>Depending on the grid type, adjacencies are defined in the 4 cardinal directions (4-connected</nobr></div>
+<div style="position:absolute;top:1782;left:162"><nobr>grid maps), or in the 4 cardinal + 4 diagonal directions (8-connected grid maps).</nobr></div>
+<div style="position:absolute;top:1802;left:184"><nobr>According to Björnsson et al. [<a href="#9">1</a>], the A* [16] algorithm used to be the de facto standard</nobr></div>
+<div style="position:absolute;top:1821;left:162"><nobr>in pathfinding search. A* is a well known best-first search method, used in many other</nobr></div>
+<div style="position:absolute;top:1841;left:162"><nobr>search problems, including AI planning and puzzle solving, to name just a few. To speed up</nobr></div>
+<div style="position:absolute;top:1860;left:162"><nobr>a search, A* uses a heuristic function <i>h</i>(<i>n</i>), which estimates the distance from a given node</nobr></div>
+<div style="position:absolute;top:1880;left:162"><nobr><i>n </i>to a goal node. Heuristics that do not overestimate the true distance to a goal are said to</nobr></div>
+<div style="position:absolute;top:1899;left:162"><nobr>be admissible. A* with an admissible heuristic returns optimal solutions. On 4-connected</nobr></div>
+<div style="position:absolute;top:1919;left:162"><nobr>maps, the Manhattan distance is a well known admissible heuristic. Given two nodes with</nobr></div>
+<div style="position:absolute;top:1938;left:162"><nobr>coordinates (<i>x</i><font style="font-size:8px">1</font><i>,y</i><font style="font-size:8px">1</font>) and (<i>x</i><font style="font-size:8px">2</font><i>,y</i><font style="font-size:8px">2</font>), the Manhattan distance is defined as ∆<i>x </i>+ ∆<i>y</i>, where</nobr></div>
+<div style="position:absolute;top:1957;left:162"><nobr>∆<i>x </i>= |<i>x</i><font style="font-size:8px">1 </font>− <i>x</i><font style="font-size:8px">2</font>| and ∆<i>y </i>= |<i>y</i><font style="font-size:8px">1 </font>− <i>y</i><font style="font-size:8px">2</font>|. On a map with no obstacles, the Manhattan distance</nobr></div>
+<div style="position:absolute;top:1977;left:162"><nobr>coincides with the true distance. The Octile distance is a variant of the Manhattan distance</nobr></div>
+<div style="position:absolute;top:1996;left:162"><nobr>adapted to 8-connected maps. It is defined as</nobr></div>
+<div style="position:absolute;top:1983;left:463"><nobr>√</nobr></div>
+<div style="position:absolute;top:1996;left:475"><nobr>2 × <i>m </i>+ (<i>M </i>− <i>m</i>), where <i>m </i>= min(∆<i>x, </i>∆<i>y</i>)</nobr></div>
+<div style="position:absolute;top:2016;left:162"><nobr>and <i>M </i>= max(∆<i>x, </i>∆<i>y</i>).</nobr></div>
+<div style="position:absolute;top:2036;left:184"><nobr>Part of the work overviewed in the rest of this section presents extensions of the baseline</nobr></div>
+<div style="position:absolute;top:2055;left:162"><nobr>approach, being based on online search. Extensions include using more informative heur-</nobr></div>
+<div style="position:absolute;top:2074;left:162"><nobr>istic methods, replacing a low-level grid map with a hierarchy of smaller search graphs,</nobr></div>
+<div style="position:absolute;top:2094;left:162"><nobr>exploiting symmetries to prune the search space in A* search, and using triangulation map</nobr></div>
+<div style="position:absolute;top:2113;left:162"><nobr>decomposition instead of grid maps.</nobr></div>
+<div style="position:absolute;top:2133;left:184"><nobr>Other contributions eliminate graph search at runtime. For example, compressed path</nobr></div>
+<div style="position:absolute;top:2153;left:162"><nobr>databases rely on a database of pre-computed all-pairs shortest path (APSP) data. Moves</nobr></div>
+<div style="position:absolute;top:2172;left:162"><nobr>are retrieved from a compressed APSP table. This is suitable to games where all potential</nobr></div>
+<div style="position:absolute;top:2191;left:162"><nobr>paths are precomputed, to largely free the CPU from the burden of path computation</nobr></div>
+<div style="position:absolute;top:2211;left:162"><nobr>during game play. The data compression helps reducing the memory overhead associated</nobr></div>
+<div style="position:absolute;top:2230;left:162"><nobr>with caching the precomputed paths.</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:2272;left:162"><nobr><b>2.1 Beyond Manhattan: Modern Pathfinding Heuristics on Grid Maps</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:2304;left:162"><nobr>The Manhattan and the Octile heuristics have the advantage of being simple, fast to com-</nobr></div>
+<div style="position:absolute;top:2324;left:162"><nobr>pute, and reasonably accurate on many map topologies. However, more informed heuristics</nobr></div>
+<div style="position:absolute;top:2343;left:162"><nobr>can reduce the number of states expanded (or visited) in a search. In this section we over-</nobr></div>
+<div style="position:absolute;top:2363;left:162"><nobr>view other heuristics in pathfinding, which can achieve a better accurracy, depending on</nobr></div>
+<div style="position:absolute;top:2382;left:162"><nobr>factors such as the map topology. They use pre-processing and additional memory to cache</nobr></div>
+<div style="position:absolute;top:2402;left:162"><nobr>the results of the pre-processing.</nobr></div>
+<div style="position:absolute;top:2421;left:184"><nobr>Goldberg and Harrelson [9<a href="#10">] </a>describe an admissible heuristic as part of their ALT search</nobr></div>
+<div style="position:absolute;top:2441;left:162"><nobr>method. Consider a given node <i>l</i>, called a landmark, on the graph. A pre-computation step</nobr></div>
+<div style="position:absolute;top:2460;left:162"><nobr>provides a look-up table with true distances <i>d</i>(<i>n, l</i>) from every node <i>n </i>to <i>l</i>. For simplicity,</nobr></div>
+<div style="position:absolute;top:2480;left:162"><nobr>assume an undirected graph. Given two arbitrary nodes <i>n</i><font style="font-size:8px">1 </font>and <i>n</i><font style="font-size:8px">2</font>, |<i>d</i>(<i>n</i><font style="font-size:8px">1</font><i>,l</i>) − <i>d</i>(<i>n</i><font style="font-size:8px">2</font><i>,l</i>)| is</nobr></div>
+<div style="position:absolute;top:2499;left:162"><nobr>an admissible estimation of the true distance from <i>n</i><font style="font-size:8px">1 </font>to <i>n</i><font style="font-size:8px">2</font>. The ALT admissible heuristic</nobr></div>
+<div style="position:absolute;top:2519;left:162"><nobr>takes the maximum max<i><font style="font-size:8px">l </font></i>|<i>d</i>(<i>n</i><font style="font-size:8px">1</font><i>,l</i>)−<i>d</i>(<i>n</i><font style="font-size:8px">2</font><i>,l</i>)| over a subset of landmarks. Goldberg and Har-</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:2699;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=3><b>Page 3</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:2794;left:136"><nobr><b>A. Botea, B. Bouzy, M. Buro, C. Bauckhage, and D. Nau</b></nobr></div>
+<div style="position:absolute;top:2794;left:782"><nobr><b>23</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:2852;left:136"><nobr>relson applied their ideas to graphs such as roadmaps and grids with non-uniform costs. The</nobr></div>
+<div style="position:absolute;top:2871;left:136"><nobr>heuristic has independently been developped by other researchers, including Sturtevant et</nobr></div>
+<div style="position:absolute;top:2890;left:136"><nobr>al. <a href="#11">[32</a>], who call it the differential heuristic. Goldenbert et al. [11] show how the differential</nobr></div>
+<div style="position:absolute;top:2910;left:136"><nobr>heuristic can be compressed. As an example of when the ALT heuristic is more informat-</nobr></div>
+<div style="position:absolute;top:2929;left:136"><nobr>ive than the Manhattan heuristic, we note that ALT can potentially identify unreachable</nobr></div>
+<div style="position:absolute;top:2949;left:136"><nobr>locations (∞ heuristic value), whereas Manhattan might return a finite value.</nobr></div>
+<div style="position:absolute;top:2968;left:158"><nobr>ALTBest<i><font style="font-size:8px">P </font></i><a href="#10">[6</a>] is a variant of the ALT heuristic that uses one single landmark, from a</nobr></div>
+<div style="position:absolute;top:2988;left:136"><nobr>pre-defined subset of <i>P </i>landmarks. Specifically, at the beginning of a search, a landmark</nobr></div>
+<div style="position:absolute;top:3007;left:136"><nobr>is selected that gives the highest heuristic distance for the initial state: arg max<i><font style="font-size:8px">l </font></i>|<i>d</i>(<i>s, l</i>) −</nobr></div>
+<div style="position:absolute;top:3027;left:136"><nobr><i>d</i>(<i>g, l</i>)|, where <i>s </i>and <i>g </i>are the start and the goal. Furthermore, at each evaluated node, the</nobr></div>
+<div style="position:absolute;top:3046;left:136"><nobr>heuristic given by the selected landmark is compared with the Manhattan heuristic, and</nobr></div>
+<div style="position:absolute;top:3066;left:136"><nobr>their maximum is used as a heuristic evaluation.</nobr></div>
+<div style="position:absolute;top:3085;left:158"><nobr>Björnsson and Halldórsson [2<a href="#10">] </a>introduce the <i>dead-end heuristic </i>and the <i>gateway heuristic</i>,</nobr></div>
+<div style="position:absolute;top:3105;left:136"><nobr>two methods that use an automated decomposition of the map into disjoint areas. The</nobr></div>
+<div style="position:absolute;top:3124;left:136"><nobr>dead-end heuristic identifies areas that are irrelevant when solving a given instance, and</nobr></div>
+<div style="position:absolute;top:3144;left:136"><nobr>assign a heuristic value of ∞ to all locations contained in such areas. The gateway heuristic</nobr></div>
+<div style="position:absolute;top:3163;left:136"><nobr>identifies gateway points between adjacent areas in the partitioning, and pre-computes a</nobr></div>
+<div style="position:absolute;top:3182;left:136"><nobr>table with optimal distances between pairs of entrances. Thus, additional memory, with</nobr></div>
+<div style="position:absolute;top:3202;left:136"><nobr>a size quadratic to the number of gateways, is traded for an improved heuristic accuracy.</nobr></div>
+<div style="position:absolute;top:3221;left:136"><nobr>A similar trade-off is taken by Sturtevant et al. [32<a href="#11">],</a> with their <i>canonical heuristic</i>, and</nobr></div>
+<div style="position:absolute;top:3241;left:136"><nobr>Goldenberg et al. [<a href="#10">10]</a>, with the <i>portal heuristic</i>. Sturtevant et al. <a href="#11">[32</a>] use the generic name</nobr></div>
+<div style="position:absolute;top:3260;left:136"><nobr>of <i>true distance heuristics </i>for the family of heuristics that store exact distances between</nobr></div>
+<div style="position:absolute;top:3280;left:136"><nobr>pairs of selected nodes.</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:3321;left:136"><nobr><b>2.2 Hierarchical Abstraction on Grid Maps</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:3352;left:136"><nobr>Hierarchical abstraction can potentially speed up a search by replacing it with a series of</nobr></div>
+<div style="position:absolute;top:3372;left:136"><nobr>smaller searches. Abstract solutions computed in a higher-level state space representation</nobr></div>
+<div style="position:absolute;top:3391;left:136"><nobr>are gradually refined, possibly through several hierarchical levels, down to the ground level</nobr></div>
+<div style="position:absolute;top:3411;left:136"><nobr>of the original search space.</nobr></div>
+<div style="position:absolute;top:3430;left:158"><nobr>Pathfinding is an application where hierarchical abstraction has been successful. Hier-</nobr></div>
+<div style="position:absolute;top:3450;left:136"><nobr>archical pathfinding methods, such as work mentioned in this section, can ensure that an</nobr></div>
+<div style="position:absolute;top:3469;left:136"><nobr>initial abstract solution can be refined into a low-level solution. This eliminates the need</nobr></div>
+<div style="position:absolute;top:3489;left:136"><nobr>to backtrack across hierarchical levels, thus eliminating a source of a potentially great slow</nobr></div>
+<div style="position:absolute;top:3508;left:136"><nobr>down.</nobr></div>
+<div style="position:absolute;top:3528;left:158"><nobr>HPA* [3<a href="#10">]</a> decomposes a map into disjoint square sectors. Entrance points between ad-</nobr></div>
+<div style="position:absolute;top:3547;left:136"><nobr>jacent sectors are identified and added as nodes into an abstracted search space. Abstract</nobr></div>
+<div style="position:absolute;top:3567;left:136"><nobr>edges connect pairs of entrance points placed on the border of the same sector. In effect, in</nobr></div>
+<div style="position:absolute;top:3586;left:136"><nobr>the abstracted space, a move traverses one sector in one step. Additional abstracted edges</nobr></div>
+<div style="position:absolute;top:3605;left:136"><nobr>connect the start node (and the target) to the entrance points of its sector. An abstract</nobr></div>
+<div style="position:absolute;top:3625;left:136"><nobr>solution contains macro moves such as sector-traversing moves. In a refinement step, a</nobr></div>
+<div style="position:absolute;top:3644;left:136"><nobr>search restricted to the area of one sector converts a macro step into a sequence of actual</nobr></div>
+<div style="position:absolute;top:3664;left:136"><nobr>moves. The method can have more than 2 hierarchical levels.</nobr></div>
+<div style="position:absolute;top:3683;left:158"><nobr>Partial Refinement A* (PRA* [34<a href="#11">]) </a>combines hierarchical abstraction with fast partial</nobr></div>
+<div style="position:absolute;top:3703;left:136"><nobr>path refinement to effectively interleave path planning with path execution, which is relevant</nobr></div>
+<div style="position:absolute;top:3722;left:136"><nobr>to robotics and video games. PRA* first builds a hierarchical map respresentation bottom-</nobr></div>
+<div style="position:absolute;top:3742;left:136"><nobr>up by mapping small connected regions (e.g., traversable 2x2 tile squares) to tiles on the next</nobr></div>
+<div style="position:absolute;top:3761;left:136"><nobr>level of abstraction while preserving connectivity. This greedy abstraction process creates</nobr></div>
+<div style="position:absolute;top:3781;left:136"><nobr>pyramids of coarser and coarser map representations up to the point in which only single</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:3854;left:742"><nobr><b>Chapter 02</b></nobr></div>
+</span></font>
+
+<div style="position:absolute;top:3961;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=4><b>Page 4</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:4056;left:94"><nobr><b>24</b></nobr></div>
+<div style="position:absolute;top:4056;left:162"><nobr><b>Pathfinding in Games</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:4114;left:162"><nobr>tiles remain that represent the original connected components. For finding paths subject</nobr></div>
+<div style="position:absolute;top:4133;left:162"><nobr>to given time and path quality constraints, we choose an abstraction layer and find nodes</nobr></div>
+<div style="position:absolute;top:4152;left:162"><nobr>representing the start and endpoints on the original map. Starting at this level, PRA*(k)</nobr></div>
+<div style="position:absolute;top:4172;left:162"><nobr>uses A* to compute the shortest path and then projects the first k steps down to the next</nobr></div>
+<div style="position:absolute;top:4191;left:162"><nobr>map abstraction level, where the shortest path is determined by only considering a small</nobr></div>
+<div style="position:absolute;top:4211;left:162"><nobr>corridor around the projected path, etc. This process quickly finds high-quality initial paths</nobr></div>
+<div style="position:absolute;top:4230;left:162"><nobr>on the original map which allows objects to start moving in the right direction quickly.</nobr></div>
+<div style="position:absolute;top:4250;left:162"><nobr>Later, Sturtevant <a href="#11">[33</a>] described a hybrid approach that combines ideas of HPA* and PRA*</nobr></div>
+<div style="position:absolute;top:4269;left:162"><nobr>to decrease memory used for abstraction.</nobr></div>
+<div style="position:absolute;top:4289;left:184"><nobr>HAA* [12<a href="#10">] </a>extends HPA* in two directions. First off, in classical pathfinding, a map</nobr></div>
+<div style="position:absolute;top:4308;left:162"><nobr>is partinioned into traversable terrain and blocked areas. HAA* makes a finer distinction,</nobr></div>
+<div style="position:absolute;top:4328;left:162"><nobr>allowing to define several types of terrain, such as ground, water, and walls. Secondly, HAA*</nobr></div>
+<div style="position:absolute;top:4347;left:162"><nobr>handles mobile units with variable sizes and variable terrain traversal capabilities.</nobr></div>
+<div style="position:absolute;top:4367;left:184"><nobr>The idea of splitting a map into disjoint rectangular blocks is also exploited in Block</nobr></div>
+<div style="position:absolute;top:4387;left:162"><nobr>A* [<a href="#11">39]</a>. Given a pre-determined block size <i>m </i>× <i>n</i>, Block A* pre-computes a database of</nobr></div>
+<div style="position:absolute;top:4406;left:162"><nobr>all possible block topologies (i.e., all possible combinations of traversable and blocked grid</nobr></div>
+<div style="position:absolute;top:4426;left:162"><nobr>cells). For each block, optimal distances between pairs of boundary cells are stored. At</nobr></div>
+<div style="position:absolute;top:4445;left:162"><nobr>runtime, Block A* expands an entire block at a time, as opposed to one individual cell, as it</nobr></div>
+<div style="position:absolute;top:4464;left:162"><nobr>is the case in regular A*. Block A* is adapted to perform any-angle pathfinding [<a href="#10">8]</a>, which,</nobr></div>
+<div style="position:absolute;top:4484;left:162"><nobr>unlike standard grid-based pathfinding, is not limited to the 8 major compass directions.</nobr></div>
+<div style="position:absolute;top:4504;left:184"><nobr>While the map decomposition used in HPA*, HAA* and Block A* explicitly assumes</nobr></div>
+<div style="position:absolute;top:4523;left:162"><nobr>a gridmap encoding of the underlying topology, it seems that they could in principle be</nobr></div>
+<div style="position:absolute;top:4543;left:162"><nobr>extended to other graphs with an (almost) planar structure. One possible approach would</nobr></div>
+<div style="position:absolute;top:4562;left:162"><nobr>be to slice the bounding rectangle of the graph with square or rectangular blocks, obtaining</nobr></div>
+<div style="position:absolute;top:4582;left:162"><nobr>the map decomposition. At the same time, PRA* appears to be more straightforward to</nobr></div>
+<div style="position:absolute;top:4601;left:162"><nobr>apply to non-gridmap graphs, as its core abstraction method relies on identifying cliques.</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:4644;left:162"><nobr><b>2.3 Symmetry Elimination</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:4676;left:162"><nobr>The frequently used assumption that traversable areas on a map have a uniform traversal</nobr></div>
+<div style="position:absolute;top:4695;left:162"><nobr>cost leads to a considerable degree of symmetry in a pathfinding problem. Consider a path</nobr></div>
+<div style="position:absolute;top:4715;left:162"><nobr>encoding where each move is represented as a direction. For example, on a 4-connected</nobr></div>
+<div style="position:absolute;top:4734;left:162"><nobr>gridmap, a path from <i>A </i>to <i>B </i>that goes three steps to the left and three steps upwards</nobr></div>
+<div style="position:absolute;top:4754;left:162"><nobr>would be encoded as <i>llluuu</i>. Assumming there are no obstacles in the grid-aligned rectangle</nobr></div>
+<div style="position:absolute;top:4773;left:162"><nobr>having <i>A </i>and <i>B </i>as opposite corners, there are many equivalent paths from <i>A </i>to <i>B</i>, obtained</nobr></div>
+<div style="position:absolute;top:4792;left:162"><nobr>by interleaving the moves: <i>lluluu</i>, <i>lluulu </i>and so on. This can lead to an excessive, useless</nobr></div>
+<div style="position:absolute;top:4812;left:162"><nobr>exploration of some parts of a map.</nobr></div>
+<div style="position:absolute;top:4832;left:184"><nobr>Symmetry reduction can be based on empty rectangles identified on a map [13<a href="#10">,</a> 14].</nobr></div>
+<div style="position:absolute;top:4851;left:162"><nobr>Given two nodes <i>A </i>and <i>B </i>on the border of an empty rectangle, all optimal paths connecting</nobr></div>
+<div style="position:absolute;top:4871;left:162"><nobr>these are symmetrical to each other, and considering only one such a path is sufficient. Thus,</nobr></div>
+<div style="position:absolute;top:4890;left:162"><nobr>search can be sped up by defining macro-operators to cross rectangles without visiting any</nobr></div>
+<div style="position:absolute;top:4909;left:162"><nobr>interior nodes. Jump point search [<a href="#10">15</a>] takes a different approach to symmetry elimination.</nobr></div>
+<div style="position:absolute;top:4929;left:162"><nobr>It allows pruning part of the successors of a node, ensuring that optimality and completeness</nobr></div>
+<div style="position:absolute;top:4948;left:162"><nobr>are preserved.</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:4991;left:162"><nobr><b>2.4 Triangulation-Based Pathfinding</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:5023;left:162"><nobr>Grid-based map representations are common in pathfinding applications such as video</nobr></div>
+<div style="position:absolute;top:5043;left:162"><nobr>games, because of their conceptual simplicity that leads to straight-forward and fast im-</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:5223;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=5><b>Page 5</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:5318;left:136"><nobr><b>A. Botea, B. Bouzy, M. Buro, C. Bauckhage, and D. Nau</b></nobr></div>
+<div style="position:absolute;top:5318;left:782"><nobr><b>25</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:5376;left:136"><nobr>plementations. However, there are several drawbacks that may render grid-based represent-</nobr></div>
+<div style="position:absolute;top:5395;left:136"><nobr>ations less useful in applications in which world objects don’t have uniform sizes or shapes,</nobr></div>
+<div style="position:absolute;top:5414;left:136"><nobr>they are not axis-aligned, or they can move in arbitrary directions. Another problem is that</nobr></div>
+<div style="position:absolute;top:5434;left:136"><nobr>basic grid-based representations waste space in case large map regions are empty. To address</nobr></div>
+<div style="position:absolute;top:5453;left:136"><nobr>these problems Demyen and Buro [7<a href="#10">] </a>present two pathfinding algorithms TA* (Triangula-</nobr></div>
+<div style="position:absolute;top:5473;left:136"><nobr>tion A*) and TRA* (Triangulation Reduction A*). TA* uses dynamic constrained Delaunay</nobr></div>
+<div style="position:absolute;top:5492;left:136"><nobr>triangulation (DCDT [18<a href="#10">])</a> to represent maps in which obstacles are defined by polygons,</nobr></div>
+<div style="position:absolute;top:5512;left:136"><nobr>and finds optimal any-angle paths for circular objects by running an A* like algorithm on</nobr></div>
+<div style="position:absolute;top:5531;left:136"><nobr>graphs induced by the triangulation.</nobr></div>
+<div style="position:absolute;top:5557;left:158"><nobr>TRA* improves on TA* by applying a topological map abstraction that contracts each</nobr></div>
+<div style="position:absolute;top:5576;left:136"><nobr>corridor in the triangulation graph to a single edge and tree components in which pathfinding</nobr></div>
+<div style="position:absolute;top:5595;left:136"><nobr>is trivial are removed and handled separately. What is left is a graph only containing degree-</nobr></div>
+<div style="position:absolute;top:5615;left:136"><nobr>3 nodes. Its size is proportional to the number of obstacles on the map, which can be</nobr></div>
+<div style="position:absolute;top:5634;left:136"><nobr>considerably smaller than the triangulation graph. Because of this size reduction, TRA*</nobr></div>
+<div style="position:absolute;top:5654;left:136"><nobr>runs faster than TA* and much faster than A* on common game maps while generating</nobr></div>
+<div style="position:absolute;top:5673;left:136"><nobr>high-quality paths. With the geometric map represenation the mentioned restrictions of</nobr></div>
+<div style="position:absolute;top:5693;left:136"><nobr>grid-based approaches are lifted. A TA* variant is being used in the StarCraft 2 game</nobr></div>
+<div style="position:absolute;top:5712;left:136"><nobr>engine.</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:5784;left:136"><nobr><b>2.5 Real-Time Search</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:5826;left:136"><nobr>Real-time search <a href="#10">[20</a>] works under the assumption that an agent has a limited amount of time</nobr></div>
+<div style="position:absolute;top:5846;left:136"><nobr>before having to make a move. Many researchers have addressed the problem since Korf’s</nobr></div>
+<div style="position:absolute;top:5865;left:136"><nobr>original work <a href="#10">[20</a>]. The general solving framework includes a planning step, a learning step</nobr></div>
+<div style="position:absolute;top:5885;left:136"><nobr>and an acting step. The cycle repeats until the agent reaches the target. In the planning</nobr></div>
+<div style="position:absolute;top:5904;left:136"><nobr>step, the agent explores the area around its current location. Learning uses the results of</nobr></div>
+<div style="position:absolute;top:5923;left:136"><nobr>the exploration to update knowledge such as heuristic estimations of the current state or</nobr></div>
+<div style="position:absolute;top:5943;left:136"><nobr>other states. Acting refers to making one or several moves, changing the current state of</nobr></div>
+<div style="position:absolute;top:5962;left:136"><nobr>the agent. The many real-time algorithms available differ in the exploration strategy (e.g.,</nobr></div>
+<div style="position:absolute;top:5982;left:136"><nobr>A* search vs breadth first search), how to perform the heuristic update, and what state to</nobr></div>
+<div style="position:absolute;top:6001;left:136"><nobr>select as the next current state.</nobr></div>
+<div style="position:absolute;top:6027;left:158"><nobr>For a long time, real-time search has not been considered as a viable approach to be</nobr></div>
+<div style="position:absolute;top:6046;left:136"><nobr>implemented in a game. A main cause is the phenomenon of <i>scrubbing</i>: when real-time</nobr></div>
+<div style="position:absolute;top:6065;left:136"><nobr>search reaches a plateau, an agent has to slowly learn more accurate heuristic values for</nobr></div>
+<div style="position:absolute;top:6085;left:136"><nobr>the states in the plateau, before being able to escape. This results in an irrational-looking</nobr></div>
+<div style="position:absolute;top:6104;left:136"><nobr>moving pattern of the agent, moving around within a local area for a long time. Solution</nobr></div>
+<div style="position:absolute;top:6124;left:136"><nobr>paths can be very long, and so can be the total time to reach the target.</nobr></div>
+<div style="position:absolute;top:6149;left:158"><nobr>Recently, a line of research on real-time search has focused on eliminating, either com-</nobr></div>
+<div style="position:absolute;top:6169;left:136"><nobr>pletely or to a great extent, the learning step and thus the scrubbing behaviour [<a href="#10">5</a>, 23]. A</nobr></div>
+<div style="position:absolute;top:6188;left:136"><nobr>key insight that contributes to the success of such methods is the idea of using <i>hill-climbing</i></nobr></div>
+<div style="position:absolute;top:6207;left:136"><nobr><i>moves</i>. These are moves that look the most promising after searching forward only one</nobr></div>
+<div style="position:absolute;top:6227;left:136"><nobr>step ahead, i.e., evaluating only the successors of a current state. Often, two nodes can be</nobr></div>
+<div style="position:absolute;top:6246;left:136"><nobr>connected by performing solely hill-climbing moves. For example, consider two nodes within</nobr></div>
+<div style="position:absolute;top:6266;left:136"><nobr>an area with no obstacles. When a path can be decomposed into subgoals such that the</nobr></div>
+<div style="position:absolute;top:6285;left:136"><nobr>next sub-goal can be reached with hill-climbing moves, moves are computed fast, with no</nobr></div>
+<div style="position:absolute;top:6305;left:136"><nobr>learning and scrubbing necessary.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:6378;left:742"><nobr><b>Chapter 02</b></nobr></div>
+</span></font>
+
+<div style="position:absolute;top:6485;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=6><b>Page 6</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:6580;left:94"><nobr><b>26</b></nobr></div>
+<div style="position:absolute;top:6580;left:162"><nobr><b>Pathfinding in Games</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:6635;left:162"><nobr><b>2.6 Compressed Path Databases</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:6669;left:162"><nobr>Most pathfinding methods search at the path query time to compute a path on demand. An</nobr></div>
+<div style="position:absolute;top:6688;left:162"><nobr>alternative approach is to perform path precomputation and lookup [<a href="#11">36]</a>, returning paths</nobr></div>
+<div style="position:absolute;top:6707;left:162"><nobr>orders of magnitude faster than online search. Straightforward ways of storing precom-</nobr></div>
+<div style="position:absolute;top:6727;left:162"><nobr>puted paths have prohibitive memory requirements, which has been a major impediment</nobr></div>
+<div style="position:absolute;top:6746;left:162"><nobr>to adopting path lookup on a larger scale. Recently, a structure called a compressed path</nobr></div>
+<div style="position:absolute;top:6766;left:162"><nobr>database [<a href="#10">4</a>] has been shown to achieve a massive lossless compression, bringing memory</nobr></div>
+<div style="position:absolute;top:6785;left:162"><nobr>needs down to reasonable values for many grid maps. Compressed path databases exploit</nobr></div>
+<div style="position:absolute;top:6805;left:162"><nobr>an idea previously observed and used in [<a href="#11">27</a>], with no application to games. In many cases,</nobr></div>
+<div style="position:absolute;top:6824;left:162"><nobr>the first move on an optimal path, from a start location <i>s </i>to any target <i>t </i>in a contiguous</nobr></div>
+<div style="position:absolute;top:6843;left:162"><nobr>remote area, is the same. The original authors call this property path coherence. For a</nobr></div>
+<div style="position:absolute;top:6863;left:162"><nobr>start–target pair (<i>s, t</i>), let the first-move label of <i>t </i>identify an optimal move to take in <i>s</i></nobr></div>
+<div style="position:absolute;top:6882;left:162"><nobr>towards <i>t</i>. Compression involves finding, for a given <i>s</i>, a contiguous area <i>A </i>where all the</nobr></div>
+<div style="position:absolute;top:6902;left:162"><nobr>targets <i>t </i>∈ <i>A </i>have the same first move label. This allows to replace many identical first-move</nobr></div>
+<div style="position:absolute;top:6921;left:162"><nobr>labels, one for each (<i>s, t</i>) pair, with one single record for the pair (<i>s, A</i>).</nobr></div>
+<div style="position:absolute;top:6942;left:184"><nobr>Advantages of compressed path databases include the speed of path retrieval and the</nobr></div>
+<div style="position:absolute;top:6961;left:162"><nobr>optimality of solutions. The first-move lag (i.e., the time to wait until the first move is</nobr></div>
+<div style="position:absolute;top:6980;left:162"><nobr>performed) is very low, since each move is retrieved independently from the subsequent moves</nobr></div>
+<div style="position:absolute;top:7000;left:162"><nobr>on the path. At the same time, compressed path databases pose a number of challenges to</nobr></div>
+<div style="position:absolute;top:7019;left:162"><nobr>be addressed in the future, as we discuss later in this report.</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:7064;left:162"><nobr><b>2.7 Multi-Agent Pathfinding</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:7097;left:162"><nobr>Multi-agent pathfinding addresses the problem of finding paths for a set of agents going to</nobr></div>
+<div style="position:absolute;top:7117;left:162"><nobr>their goals. Each agent may have its own goal or all the agents may have a global goal. At</nobr></div>
+<div style="position:absolute;top:7136;left:162"><nobr>each timestep, all agents move according to their plans. The set of agents has to find the</nobr></div>
+<div style="position:absolute;top:7156;left:162"><nobr>minimal cost for reaching the set of goals, or to maximize some quantity. The cost can be</nobr></div>
+<div style="position:absolute;top:7175;left:162"><nobr>the elapsed time. Compared to mono-agent pathfinding, two obstacles appear clearly. The</nobr></div>
+<div style="position:absolute;top:7194;left:162"><nobr>first one is the size of the set of (joint) actions which is exponential in the number of agents,</nobr></div>
+<div style="position:absolute;top:7214;left:162"><nobr>which lead to difficulty for a global planning method. And when considering the elementary</nobr></div>
+<div style="position:absolute;top:7233;left:162"><nobr>solutions to each mono-agent problem in order to find a global solution, the second one is</nobr></div>
+<div style="position:absolute;top:7253;left:162"><nobr>managing collisions between agents.</nobr></div>
+<div style="position:absolute;top:7273;left:184"><nobr>Furthermore, multi-agent pathfinding can be cooperative, when all the agents help each</nobr></div>
+<div style="position:absolute;top:7293;left:162"><nobr>other and try to optimize in the same direction. But it can be adversarial when an army</nobr></div>
+<div style="position:absolute;top:7312;left:162"><nobr>tries to reach a point and another one prevents this from happening.</nobr></div>
+<div style="position:absolute;top:7332;left:184"><nobr>Starting points for cooperative pathfindind (CPF) are optimal methods like centralized</nobr></div>
+<div style="position:absolute;top:7352;left:162"><nobr>A*. They work well on small problems. To avoid the exponential number of actions in the</nobr></div>
+<div style="position:absolute;top:7371;left:162"><nobr>number of agents, Standley proposes the mechanism of operator decomposition (OD) [<a href="#11">30]</a>.</nobr></div>
+<div style="position:absolute;top:7391;left:162"><nobr>Instead of considering that the set of agents decides its joint action (operator), the agents</nobr></div>
+<div style="position:absolute;top:7410;left:162"><nobr>decide their elementary action in turn, one after each other. With some care to special cases,</nobr></div>
+<div style="position:absolute;top:7430;left:162"><nobr>A* associated with OD and a perfect heuristic is admissible and complete <a href="#11">[30</a>]. Another idea</nobr></div>
+<div style="position:absolute;top:7449;left:162"><nobr>for optimal solutions is independence detection (ID) <a href="#11">[31</a>]. Each agent plans its optimal path</nobr></div>
+<div style="position:absolute;top:7468;left:162"><nobr>to the goal with A*. Then conflicts are detected, and resolved if possible. When a conflict</nobr></div>
+<div style="position:absolute;top:7488;left:162"><nobr>between two agents is not solvable, the two agents are gathered into a group, and an optimal</nobr></div>
+<div style="position:absolute;top:7507;left:162"><nobr>solution is found for this group. Conflict between groups are detected and so forth. When</nobr></div>
+<div style="position:absolute;top:7527;left:162"><nobr>few conflicts occur this method avoids the exponential size of the set of actions, but in the</nobr></div>
+<div style="position:absolute;top:7546;left:162"><nobr>worst case, this method is inferior to any centralized method.</nobr></div>
+<div style="position:absolute;top:7567;left:184"><nobr>The Increasing Cost Tree Search (ICTS) [28<a href="#11">] is</a> a two-level search: a global level and a</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:7747;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=7><b>Page 7</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:7842;left:136"><nobr><b>A. Botea, B. Bouzy, M. Buro, C. Bauckhage, and D. Nau</b></nobr></div>
+<div style="position:absolute;top:7842;left:782"><nobr><b>27</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:7900;left:136"><nobr>low level. At the global level, the search proceeds on an Incremental Cost Tree (ICT) in</nobr></div>
+<div style="position:absolute;top:7919;left:136"><nobr>which one node corresponds to a vector of costs. The global cost is the sum of individual cost</nobr></div>
+<div style="position:absolute;top:7938;left:136"><nobr>heuristic (SIC). At the root of the ICT the costs are the optimal costs of agents considered</nobr></div>
+<div style="position:absolute;top:7958;left:136"><nobr>alone, and the global cost cannot be smaller. At depth <i>δ</i>, the sum of the costs of a node</nobr></div>
+<div style="position:absolute;top:7977;left:136"><nobr>is the optimal cost plus <i>δ</i>. A node is a goal for ICT iff there is an effective combination of</nobr></div>
+<div style="position:absolute;top:7997;left:136"><nobr>individual paths without conflict and with costs corresponding to the costs of the node. ICT</nobr></div>
+<div style="position:absolute;top:8016;left:136"><nobr>search is a breadth-first search for a goal node that progressively increases the best possible</nobr></div>
+<div style="position:absolute;top:8036;left:136"><nobr>optimal cost.</nobr></div>
+<div style="position:absolute;top:8056;left:158"><nobr>In video games, optimal complete methods are not always searched because they are</nobr></div>
+<div style="position:absolute;top:8076;left:136"><nobr>not scalable. Instead, suboptimal, incomplete but tractable methods exist. Cooperative A*</nobr></div>
+<div style="position:absolute;top:8095;left:136"><nobr><a href="#11">[29</a>] decomposes the whole task into a series of single agent searches in a three-dimensional</nobr></div>
+<div style="position:absolute;top:8115;left:136"><nobr>space including time. A wait move is added to the set of actions of the agents. The</nobr></div>
+<div style="position:absolute;top:8134;left:136"><nobr>computed routes are stored in a reservation table that forbids to use its entries in future</nobr></div>
+<div style="position:absolute;top:8154;left:136"><nobr>searches. Hierarchical cooperative A* (HCA*) uses the idea of Hierarchical A* [<a href="#10">17</a>] with</nobr></div>
+<div style="position:absolute;top:8173;left:136"><nobr>the simplest possible hierarchy: the domain with all agents removed. An issue of HCA*</nobr></div>
+<div style="position:absolute;top:8192;left:136"><nobr>is how to terminate: sometimes an agent sitting on its destination must move to give the</nobr></div>
+<div style="position:absolute;top:8212;left:136"><nobr>way to another agent. Another issue is the ordering of agents, and the most important</nobr></div>
+<div style="position:absolute;top:8231;left:136"><nobr>one is computing complete routes in the 3-dimensional space. Therefore, Windowed HCA*</nobr></div>
+<div style="position:absolute;top:8251;left:136"><nobr>(WHCA*) simply limits the lookahead in each search it performs to a fixed-horizon time</nobr></div>
+<div style="position:absolute;top:8270;left:136"><nobr>window [<a href="#11">29]</a>.</nobr></div>
+<div style="position:absolute;top:8291;left:158"><nobr>Multi-agent pathfinding can be solved suboptimally in low-polynomial time [21<a href="#11">,</a> 26].</nobr></div>
+<div style="position:absolute;top:8310;left:136"><nobr>However, the practical performance of the available complete method is an open question.</nobr></div>
+<div style="position:absolute;top:8330;left:136"><nobr>Recent research has lead to the creation of multiple suboptimal methods that are complete</nobr></div>
+<div style="position:absolute;top:8349;left:136"><nobr>on well-specified subclasses of instances. Push-and-Swap <a href="#11">[25</a>] works on problems with at</nobr></div>
+<div style="position:absolute;top:8369;left:136"><nobr>least two free nodes (i.e., problems where the number of nodes in the graph representing the</nobr></div>
+<div style="position:absolute;top:8388;left:136"><nobr>map exceeds the number of mobile units by at least two). MAPP [<a href="#11">38]</a> works on problems of</nobr></div>
+<div style="position:absolute;top:8408;left:136"><nobr>the Slidable class. TASS <a href="#10">[19</a>] works on problems with at least four free nodes. The TASS</nobr></div>
+<div style="position:absolute;top:8427;left:136"><nobr>method is a tree-based agent swapping strategy. There are other sub-optimal methods that</nobr></div>
+<div style="position:absolute;top:8446;left:136"><nobr>work well in practice, but whose completeness range has not been characterized [29<a href="#11">, </a>35, 37].</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:8495;left:144"><nobr><b>3</b></nobr></div>
+<div style="position:absolute;top:8495;left:181"><nobr><b>Looking at the Future</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:8534;left:136"><nobr>In this section we discuss a number of current challenges and directions for the future.</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:8581;left:136"><nobr><b>3.1 Bridging the Industry–Academia Gap</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:8615;left:136"><nobr>As discussed earlier in the report, recently there has been a significant progress in academic</nobr></div>
+<div style="position:absolute;top:8634;left:136"><nobr>research in multi-agent path finding. Computer games are often mentioned as an application</nobr></div>
+<div style="position:absolute;top:8654;left:136"><nobr>domain in research papers, and game maps have been used as benchmark data. However, it</nobr></div>
+<div style="position:absolute;top:8673;left:136"><nobr>appears that there is a need for a better alignment between problems addressed in academic</nobr></div>
+<div style="position:absolute;top:8693;left:136"><nobr>research and problems that are truly relevant to game developers. Recent academic research</nobr></div>
+<div style="position:absolute;top:8712;left:136"><nobr>has focused on objectives such as computing optimal solutions, or scaling sub-optimal meth-</nobr></div>
+<div style="position:absolute;top:8731;left:136"><nobr>ods to hundreds or even thousands of mobile units. Such objectives are important on their</nobr></div>
+<div style="position:absolute;top:8751;left:136"><nobr>own but, in many real-time strategy games, solution optimality is not strictly needed, and</nobr></div>
+<div style="position:absolute;top:8770;left:136"><nobr>there can be relatively few units interacting on a portion of a map. In such games, the ability</nobr></div>
+<div style="position:absolute;top:8790;left:136"><nobr>to encircle and attack a moving enemy unit, which combines elements of multi-agent col-</nobr></div>
+<div style="position:absolute;top:8809;left:136"><nobr>laborative pathfinding, multi-agent adversarial pathfinding, and multi-agent moving-target</nobr></div>
+<div style="position:absolute;top:8829;left:136"><nobr>search, could be quite important.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:8902;left:742"><nobr><b>Chapter 02</b></nobr></div>
+</span></font>
+
+<div style="position:absolute;top:9009;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=8><b>Page 8</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:9104;left:94"><nobr><b>28</b></nobr></div>
+<div style="position:absolute;top:9104;left:162"><nobr><b>Pathfinding in Games</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:9162;left:184"><nobr>We believe that a better industry–academia integration in multi-agent pathfinding could</nobr></div>
+<div style="position:absolute;top:9181;left:162"><nobr>benefit if game developers make available precise definitions of some of their problems and</nobr></div>
+<div style="position:absolute;top:9200;left:162"><nobr>interest, and possibly data to experiment with. They could be made available on their</nobr></div>
+<div style="position:absolute;top:9220;left:162"><nobr>own, or be part of a competition open to academic researchers. Recently, Sturtevant has</nobr></div>
+<div style="position:absolute;top:9239;left:162"><nobr>organized a Grid-Based Path Planning Competition<a href="#8"></a><font style="font-size:8px"><a href="#8">1</a></font><a href="#8"></a>. This first edition focused on single-</nobr></div>
+<div style="position:absolute;top:9259;left:162"><nobr>agent pathfinding on fully known, static maps. This could pave the way towards more</nobr></div>
+<div style="position:absolute;top:9278;left:162"><nobr>diverse types of competition problems, such as multi-agent path planning.</nobr></div>
+<div style="position:absolute;top:9298;left:184"><nobr>In multi-agent pathfinding, non-interfering paths that bring each agent from its current</nobr></div>
+<div style="position:absolute;top:9318;left:162"><nobr>state to its goal state must be planned. The agents are considered as friendly, and one agent</nobr></div>
+<div style="position:absolute;top:9337;left:162"><nobr>may give the way to another one. For example, workers mining and transporting ore is such</nobr></div>
+<div style="position:absolute;top:9357;left:162"><nobr>a problem. The complexity of a problem depends on the connectivity of the grid, the rules</nobr></div>
+<div style="position:absolute;top:9376;left:162"><nobr>governing agent movements, the size of the grid, the number of obstacles, the number of</nobr></div>
+<div style="position:absolute;top:9395;left:162"><nobr>agents. The challenge is to find solutions that avoid collisions and deadlocks in the context</nobr></div>
+<div style="position:absolute;top:9415;left:162"><nobr>of fast computations. Future work consist in filling the gap between optimal algorithms</nobr></div>
+<div style="position:absolute;top:9434;left:162"><nobr>solving relatively simple problems and tractable algorithms solving very complex problems</nobr></div>
+<div style="position:absolute;top:9454;left:162"><nobr>but not optimally.</nobr></div>
+<div style="position:absolute;top:9474;left:184"><nobr>In adversarial multi-agent pathfinding, encircling behaviors, pursuit behaviors and/or</nobr></div>
+<div style="position:absolute;top:9493;left:162"><nobr>escaping behaviors must be planned. For example, encircling an enemy unit to attack it,</nobr></div>
+<div style="position:absolute;top:9513;left:162"><nobr>guarding one or several chokepoints, catching up a prey. Some agents are inimical and their</nobr></div>
+<div style="position:absolute;top:9532;left:162"><nobr>meetings lead to fight whose outcomes can be the partial weakening or the complete destruc-</nobr></div>
+<div style="position:absolute;top:9551;left:162"><nobr>tion of some of the agents. However, some other agents are friendly and must coordinate</nobr></div>
+<div style="position:absolute;top:9571;left:162"><nobr>their movements to reach a goal needing cooperation, such as circling a prey. The terminal</nobr></div>
+<div style="position:absolute;top:9590;left:162"><nobr>conditions of the plan can be fuzzy and hard to determine, and planning can be continual.</nobr></div>
+<div style="position:absolute;top:9610;left:162"><nobr>Future work include the integration of the adversarial multi-agent pathfinding solutions with</nobr></div>
+<div style="position:absolute;top:9629;left:162"><nobr>game tree solutions to video games considered as two-player games.</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:9672;left:162"><nobr><b>3.2 From Smart Agents to Smart Maps</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:9704;left:162"><nobr>While single-agent path planning can naturally be modelled with an agent-centered ap-</nobr></div>
+<div style="position:absolute;top:9724;left:162"><nobr>proach, other problems may require a decision-making entity that is different from individual</nobr></div>
+<div style="position:absolute;top:9743;left:162"><nobr>mobile units. For example, in multi-agent path planning, both views could be considered. A</nobr></div>
+<div style="position:absolute;top:9763;left:162"><nobr><i>distributed </i>approach would be agent-centered, allowing each agent to make decisions based</nobr></div>
+<div style="position:absolute;top:9782;left:162"><nobr>on its (possibly incomplete) knowledge about the rest of the problem. Many multi-agent</nobr></div>
+<div style="position:absolute;top:9802;left:162"><nobr>pathfinding algorithms, however, including most methods discussed in this report, assume</nobr></div>
+<div style="position:absolute;top:9821;left:162"><nobr>the existence of a centralized decision maker.</nobr></div>
+<div style="position:absolute;top:9841;left:184"><nobr>Taking the idea further, we argue that part of the intelligence built in a path-finding</nobr></div>
+<div style="position:absolute;top:9860;left:162"><nobr>module could be associated with parts of the environment in a distributed manner. For</nobr></div>
+<div style="position:absolute;top:9880;left:162"><nobr>example, a notion of a <i>smart chokepoint </i>could be used to schedule incoming units through a</nobr></div>
+<div style="position:absolute;top:9899;left:162"><nobr>narrow area of a map. The idea is similar to a traffic light system controlling an individual</nobr></div>
+<div style="position:absolute;top:9919;left:162"><nobr>intersection on a road map. More generally, local portions of a map, not restricted to certain</nobr></div>
+<div style="position:absolute;top:9938;left:162"><nobr>types of topologies could be responsible for a smooth navigation inside their own areas.</nobr></div>
+<div style="position:absolute;top:9958;left:184"><nobr>A dynamic environment offers an additional scope for developing intelligent map func-</nobr></div>
+<div style="position:absolute;top:9978;left:162"><nobr>tionality. As pointed out earlier in the report, advanced pathfinding algorithms can use</nobr></div>
+<div style="position:absolute;top:9997;left:162"><nobr>pre-computed datastructures for a faster path computation. Dynamic changes can inval-</nobr></div>
+<div style="position:absolute;top:10017;left:162"><nobr>idate underlying datastructures. A smart map should be able to know when to trigger a</nobr></div>
+<div style="position:absolute;top:10036;left:162"><nobr>repair, what area of the map should be affected, how to perform a repair, and how to handle</nobr></div>
+<div style="position:absolute;top:10055;left:162"><nobr>ongoing navigation while a local datastructure is still under repair.</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:10109;left:162"><nobr>1 <font style="font-size:10px"><a href="http://movingai.com/GPPC/index.html">http://movingai.com/GPPC/index.html</a></font></nobr></div>
+</span></font>
+
+<div style="position:absolute;top:10271;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=9><b>Page 9</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:10366;left:136"><nobr><b>A. Botea, B. Bouzy, M. Buro, C. Bauckhage, and D. Nau</b></nobr></div>
+<div style="position:absolute;top:10366;left:782"><nobr><b>29</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:10421;left:136"><nobr><b>3.3 Time and Memory Constraints</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:10454;left:136"><nobr>While common formulations of pathfinding problems, such as single-agent pathfinding on</nobr></div>
+<div style="position:absolute;top:10474;left:136"><nobr>a static graph, have a low polynomial complexity, the challenge is to satisfy the ambitious</nobr></div>
+<div style="position:absolute;top:10493;left:136"><nobr>CPU and memory limits set in actual games. There tends to be a speed–memory trade-off,</nobr></div>
+<div style="position:absolute;top:10512;left:136"><nobr>exhibited, for example, by methods that perform pre-processing and use the cached results of</nobr></div>
+<div style="position:absolute;top:10532;left:136"><nobr>pre-processing for a faster online pathfinding. Path quality is a third performance measure</nobr></div>
+<div style="position:absolute;top:10551;left:136"><nobr>that must be considered. The challenge is to improve the performance on one or more such</nobr></div>
+<div style="position:absolute;top:10571;left:136"><nobr>criteria, without paying a price on the remaining criteria.</nobr></div>
+<div style="position:absolute;top:10591;left:158"><nobr>Compressed path databases (CPDs) illustrate the speed–memory tradeoff well, being a</nobr></div>
+<div style="position:absolute;top:10610;left:136"><nobr>fast but memory-consuming method. Compressed path databases are more memory intens-</nobr></div>
+<div style="position:absolute;top:10630;left:136"><nobr>ive than other pathfinding methods, such as techniques that involve A* search. Thus, we</nobr></div>
+<div style="position:absolute;top:10649;left:136"><nobr>use CPDs as a case study, discussing how its memory footprint could be improved.</nobr></div>
+<div style="position:absolute;top:10669;left:158"><nobr>Future efforts on reducing their size could aim at preserving path optimality, or could</nobr></div>
+<div style="position:absolute;top:10689;left:136"><nobr>relax this requirement, as a tradeoff to a better size reduction. In games, the optimality of</nobr></div>
+<div style="position:absolute;top:10708;left:136"><nobr>solutions is not seen as a must-have feature. Suboptimal paths that look reasonable to a user</nobr></div>
+<div style="position:absolute;top:10728;left:136"><nobr>are acceptable. A promising idea that involves suboptimal paths is combining compressed</nobr></div>
+<div style="position:absolute;top:10747;left:136"><nobr>path databases with hierarchical abstraction. Recently, Kring et al. <a href="#11">[22</a>] have extended the</nobr></div>
+<div style="position:absolute;top:10767;left:136"><nobr>HPA* algorithm to cache (uncompressed) all-pairs shortest paths for small rectangular sub-</nobr></div>
+<div style="position:absolute;top:10786;left:136"><nobr>parts of a map. The idea could be taken further to store such local all-pairs shortest paths</nobr></div>
+<div style="position:absolute;top:10805;left:136"><nobr>in a compressed form, in the style of CPDs. Furthermore, at the global level, a compressed</nobr></div>
+<div style="position:absolute;top:10825;left:136"><nobr>path database could be computed for the abstract graph that HPA* uses. This approach</nobr></div>
+<div style="position:absolute;top:10844;left:136"><nobr>would result in a hierarchical, two-level compressed path database.</nobr></div>
+<div style="position:absolute;top:10865;left:158"><nobr>Finally, we advocate a closer interaction with communities working on related problems,</nobr></div>
+<div style="position:absolute;top:10884;left:136"><nobr>such as robot navigation, journey planning on a road map, and multi-modal journey planning</nobr></div>
+<div style="position:absolute;top:10903;left:136"><nobr>in a city. Similarities between such domains and pathfinding in games have encouraged, to</nobr></div>
+<div style="position:absolute;top:10923;left:136"><nobr>some extent, the transfer of ideas across domains. Clearly, future common events, such as</nobr></div>
+<div style="position:absolute;top:10942;left:136"><nobr>workshops at big conferences, would help tighten the connections.</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:10988;left:144"><nobr><b>4</b></nobr></div>
+<div style="position:absolute;top:10988;left:181"><nobr><b>Conclusion</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:11026;left:136"><nobr>Summarizing discussions held in the Pathfinding Workgroup at the Dagstuhl Seminar 12191,</nobr></div>
+<div style="position:absolute;top:11045;left:136"><nobr>this chapter focused on recent advances, current limitations and possible future directions</nobr></div>
+<div style="position:absolute;top:11064;left:136"><nobr>in pathfinding research. A comprehensive literature survey was beyond the purpose of our</nobr></div>
+<div style="position:absolute;top:11084;left:136"><nobr>work. Instead, our survey was meant to set the grounds for identifying challenges and future</nobr></div>
+<div style="position:absolute;top:11103;left:136"><nobr>work ideas.</nobr></div>
+<div style="position:absolute;top:11124;left:158"><nobr>It seems that research in pathfinding is not in a danger of fading. The recent first edition</nobr></div>
+<div style="position:absolute;top:11143;left:136"><nobr>of the pathfinding competition suggests that the interest remains high even for the standard,</nobr></div>
+<div style="position:absolute;top:11162;left:136"><nobr>well studied single-agent pathfinding on a fully known grid map. Yet, some diversification</nobr></div>
+<div style="position:absolute;top:11182;left:136"><nobr>to the focus of future research might be desirable. For example, in problems such as multi-</nobr></div>
+<div style="position:absolute;top:11201;left:136"><nobr>agent pathfinding, there seems to be a gap between academic research and commercial</nobr></div>
+<div style="position:absolute;top:11221;left:136"><nobr>game development. The two communities could mutually benefit from each other if game</nobr></div>
+<div style="position:absolute;top:11240;left:136"><nobr>developers make available descriptions of problem variants that are particularly relevant to a</nobr></div>
+<div style="position:absolute;top:11260;left:136"><nobr>game, together with performance specs (speed, memory) expected from a solving algorithm.</nobr></div>
+<div style="position:absolute;top:11308;left:172"><nobr><b>References</b></nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:11335;left:145"><nobr><b>1</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:11335;left:172"><nobr>Y. Björnsson, M. Enzenberger, R. Holte, and J. Schaeffer. Fringe Search: Beating A* at</nobr></div>
+<div style="position:absolute;top:11354;left:172"><nobr>Pathfinding on Game Maps. In <i>Proceedings of the IEEE Symposium on Computational</i></nobr></div>
+<div style="position:absolute;top:11373;left:172"><nobr><i>Intelligence and Games CIG-05</i>, pages 125–132, 2005.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:11428;left:744"><nobr><b>Chapter 02</b></nobr></div>
+</span></font>
+
+<div style="position:absolute;top:11533;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=10><b>Page 10</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:11628;left:94"><nobr><b>30</b></nobr></div>
+<div style="position:absolute;top:11628;left:162"><nobr><b>Pathfinding in Games</b></nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:11686;left:170"><nobr><b>2</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:11686;left:198"><nobr>Yngvi Björnsson and Kári Halldórsson. Improved heuristics for optimal path-finding on</nobr></div>
+<div style="position:absolute;top:11705;left:198"><nobr>game maps. In <i>Proceedings of the Conference on AI and Interactive Digital Entertainment</i></nobr></div>
+<div style="position:absolute;top:11723;left:198"><nobr><i>AIIDE-06</i>, pages 9–14, 2006.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:11743;left:170"><nobr><b>3</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:11743;left:198"><nobr>A. Botea, M. Müller, and J. Schaeffer. Near optimal hierarchical path-finding. <i>Journal of</i></nobr></div>
+<div style="position:absolute;top:11762;left:198"><nobr><i>Game Development</i>, 1:7–28, 2004.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:11781;left:170"><nobr><b>4</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:11781;left:198"><nobr>Adi Botea. Ultra-fast Optimal Pathfinding without Runtime Search. In <i>Proceedings of the</i></nobr></div>
+<div style="position:absolute;top:11800;left:198"><nobr><i>Conference on AI and Interactive Digital Entertainment (AIIDE-11)</i>, pages 122–127, 2011.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:11819;left:170"><nobr><b>5</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:11819;left:198"><nobr>Vadim Bulitko, Yngvi Björnsson, and Ramon Lawrence. Case-based subgoaling in real-</nobr></div>
+<div style="position:absolute;top:11838;left:198"><nobr>time heuristic search for video game pathfinding. <i>Journal of Artificial Intelligence Research</i></nobr></div>
+<div style="position:absolute;top:11857;left:198"><nobr><i>(JAIR)</i>, 39:269–300, 2010.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:11876;left:170"><nobr><b>6</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:11876;left:198"><nobr>Tristan Cazenave. Optimizations of data structures, heuristics and algorithms for path-</nobr></div>
+<div style="position:absolute;top:11895;left:198"><nobr>finding on maps. In <i>Proceedings of the IEEE Symposium on Computational Intelligence</i></nobr></div>
+<div style="position:absolute;top:11913;left:198"><nobr><i>and Games CIG-06</i>, pages 27–33, 2006.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:11933;left:170"><nobr><b>7</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:11933;left:198"><nobr>Douglas Demyen and Michael Buro. Efficient triangulation-based pathfinding. In <i>Proc. of</i></nobr></div>
+<div style="position:absolute;top:11951;left:198"><nobr><i>the 21st National Conference on Artificial intelligence</i>, AAAI-06, pages 942–947, 2006.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:11971;left:170"><nobr><b>8</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:11971;left:198"><nobr>David Ferguson and Anthony (Tony) Stentz. Using Interpolation to Improve Path Planning:</nobr></div>
+<div style="position:absolute;top:11990;left:198"><nobr>The Field D* Algorithm. <i>Journal of Field Robotics</i>, 23(2):79–101, February 2006.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:12009;left:170"><nobr><b>9</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:12009;left:198"><nobr>A. V. Goldberg and C. Harrelson. Computing the Shortest Path: A* Search Meets Graph</nobr></div>
+<div style="position:absolute;top:12028;left:198"><nobr>Theory. In <i>Proceedings of the ACM-SIAM Symposium on Discrete Algorithms SODA-05</i>,</nobr></div>
+<div style="position:absolute;top:12046;left:198"><nobr>pages 156–165, 2005.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:12066;left:162"><nobr><b>10</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:12066;left:198"><nobr>M. Goldenberg, Ar. Felner, N. Sturtevant, and J. Schaeffer. Portal-based true-distance</nobr></div>
+<div style="position:absolute;top:12084;left:198"><nobr>heuristics for path finding. In <i>Proceedings of the Symposium on Combinatorial Search</i></nobr></div>
+<div style="position:absolute;top:12103;left:198"><nobr><i>SoCS-10</i>, pages 39–45, 2010.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:12123;left:162"><nobr><b>11</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:12123;left:198"><nobr>Meir Goldenberg, Nathan Sturtevant, Ariel Felner, and Jonathan Schaeffer. The com-</nobr></div>
+<div style="position:absolute;top:12141;left:198"><nobr>pressed differential heuristic. In <i>Proceedings of the National Conference on Artificial Intel-</i></nobr></div>
+<div style="position:absolute;top:12160;left:198"><nobr><i>ligence AAAI-11</i>, pages 24–29, 2011.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:12179;left:162"><nobr><b>12</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:12179;left:198"><nobr>Daniel Harabor and Adi Botea. Hierarchical Path Planning for Multi-Size Agents in Het-</nobr></div>
+<div style="position:absolute;top:12198;left:198"><nobr>erogeneous Environments. In <i>Proceedings of the IEEE Symposium on Computational In-</i></nobr></div>
+<div style="position:absolute;top:12217;left:198"><nobr><i>telligence and Games CIG-08</i>, pages 258–265, Perth, Australia, December 2008.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:12236;left:162"><nobr><b>13</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:12236;left:198"><nobr>Daniel Harabor and Adi Botea. Breaking path symmetries in 4-connected grid maps.</nobr></div>
+<div style="position:absolute;top:12255;left:198"><nobr>In <i>Proceedings of the Conference on AI and Interactive Digital Entertainment AIIDE-10</i>,</nobr></div>
+<div style="position:absolute;top:12274;left:198"><nobr>pages 33–38, 2010.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:12293;left:162"><nobr><b>14</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:12293;left:198"><nobr>Daniel Harabor, Adi Botea, and Phil Kilby. Path Symmetries in Undirected Uniform-</nobr></div>
+<div style="position:absolute;top:12312;left:198"><nobr>cost Grids. In <i>In Proceedings of the Ninth Symposium on Abstraction, Reformulation, and</i></nobr></div>
+<div style="position:absolute;top:12330;left:198"><nobr><i>Approximation (SARA-11)</i>, 2011.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:12350;left:162"><nobr><b>15</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:12350;left:198"><nobr>Daniel Harabor and Alban Grastien. Online graph pruning for pathfinding on grid maps.</nobr></div>
+<div style="position:absolute;top:12368;left:198"><nobr>In <i>Proceedings of the National Conference on Artificial Intelligence AAAI-11</i>, 2011.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:12388;left:162"><nobr><b>16</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:12388;left:198"><nobr>P. Hart, N. Nilsson, and B. Raphael. A formal basis for the heuristic determination of min-</nobr></div>
+<div style="position:absolute;top:12407;left:198"><nobr>imum cost paths. <i>IEEE Transactions on System Sciences and Cybernetics</i>, SSC-4(2):100–</nobr></div>
+<div style="position:absolute;top:12425;left:198"><nobr>107, 1968.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:12445;left:162"><nobr><b>17</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:12445;left:198"><nobr>R. Holte, M. Perez, R. Zimmer, and A. MacDonald. Hierarchical A*: Searching Abstraction</nobr></div>
+<div style="position:absolute;top:12463;left:198"><nobr>Hierarchies Efficiently. Technical report, University of Ottawa, TR-95-18, 1995.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:12483;left:162"><nobr><b>18</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:12483;left:198"><nobr>Marcelo Kallmann, Hanspeter Bieri, and Daniel Thalmann. Fully dynamic constrained</nobr></div>
+<div style="position:absolute;top:12502;left:198"><nobr>delaunay triangulations. In G. Brunnett, B. Hamann, H. Mueller, and L. Linsen, editors,</nobr></div>
+<div style="position:absolute;top:12520;left:198"><nobr><i>Geometric Modelling for Scientific Visualization</i>, pages 241–257. Springer-Verlag, Heidel-</nobr></div>
+<div style="position:absolute;top:12539;left:198"><nobr>berg, Germany, first edition, 2003. ISBN 3-540-40116-4.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:12558;left:162"><nobr><b>19</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:12558;left:198"><nobr>M.M. Khorshid, R.C. Holte, and N. Sturtevant. A polynomial-time algorithm for non-</nobr></div>
+<div style="position:absolute;top:12577;left:198"><nobr>optimal multi-agent pathfinding. In <i>Proceedings of the Fourth Annual Symposium on Com-</i></nobr></div>
+<div style="position:absolute;top:12596;left:198"><nobr><i>binatorial Search (SoCS)</i>, pages 76–83, 2011.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:12615;left:162"><nobr><b>20</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:12615;left:198"><nobr>R. Korf. Real-Time Heuristic Search. <i>Artificial Intelligence</i>, 42(2-3):189–211, 1990.</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:12795;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=11><b>Page 11</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:12890;left:136"><nobr><b>A. Botea, B. Bouzy, M. Buro, C. Bauckhage, and D. Nau</b></nobr></div>
+<div style="position:absolute;top:12890;left:782"><nobr><b>31</b></nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:12948;left:137"><nobr><b>21</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:12948;left:172"><nobr>D. Kornhauser, G. Miller, and P. Spirakis. Coordinating pebble motion on graphs, the</nobr></div>
+<div style="position:absolute;top:12967;left:172"><nobr>diameter of permutation groups, and applications. In <i>Proceedings of the 25th Annual Sym-</i></nobr></div>
+<div style="position:absolute;top:12985;left:172"><nobr><i>posium on Foundations of Computer Science (FOCS)</i>, pages 241–250, 1984.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13004;left:137"><nobr><b>22</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13004;left:172"><nobr>Alex Kring, Alex J. Champandard, and Nick Samarin. DHPA* and SHPA*: Efficient</nobr></div>
+<div style="position:absolute;top:13023;left:172"><nobr>Hierarchical Pathfinding in Dynamic and Static Game Worlds. In <i>Proceedings of the AI</i></nobr></div>
+<div style="position:absolute;top:13042;left:172"><nobr><i>and Interactive Digital Entertainment Conference AIIDE-10</i>, pages 39–44, 2010.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13060;left:137"><nobr><b>23</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13060;left:172"><nobr>Ramon Lawrence and Vadim Bulitko. Database-driven real-time heuristic search in video-</nobr></div>
+<div style="position:absolute;top:13079;left:172"><nobr>game pathfinding. <i>IEEE Trans. Comput. Intellig. and AI in Games</i>, 5(3):227–241, 2013.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13097;left:137"><nobr><b>24</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13098;left:172"><nobr>Simon M. Lucas, Michael Mateas, Mike Preuss, Pieter Spronck, and Julian Togelius. Artifi-</nobr></div>
+<div style="position:absolute;top:13116;left:172"><nobr>cial and Computational Intelligence in Games (Dagstuhl Seminar 12191). <i>Dagstuhl Reports</i>,</nobr></div>
+<div style="position:absolute;top:13135;left:172"><nobr>2(5):43–70, 2012.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13154;left:137"><nobr><b>25</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13154;left:172"><nobr>Ryan Luna and Kostas E. Bekris. An efficient and complete approach for cooperative</nobr></div>
+<div style="position:absolute;top:13172;left:172"><nobr>path-finding. In <i>Proc. of the National Conference on Artificial Intelligence AAAI-11</i>, 2011.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13191;left:137"><nobr><b>26</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13191;left:172"><nobr>Gabriele Röger and Malte Helmert. Non-optimal multi-agent pathfinding is solved (since</nobr></div>
+<div style="position:absolute;top:13210;left:172"><nobr>1984). In <i>Proceedings of the Symposium on Combinatorial Search SoCS-12</i>, 2012.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13228;left:137"><nobr><b>27</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13228;left:172"><nobr>Jagan Sankaranarayanan, Houman Alborzi, and Hanan Samet. Efficient query processing</nobr></div>
+<div style="position:absolute;top:13247;left:172"><nobr>on spatial networks. In <i>ACM Workshop on Geographic Information Systems</i>, pages 200–209,</nobr></div>
+<div style="position:absolute;top:13266;left:172"><nobr>2005.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13284;left:137"><nobr><b>28</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13284;left:172"><nobr>Guni Sharon, Roni Stern, Meir Goldenberg, and Ariel Felner. The increasing cost tree search</nobr></div>
+<div style="position:absolute;top:13303;left:172"><nobr>for optimal multi-agent pathfinding. In <i>Proceedings of the International Joint Conference</i></nobr></div>
+<div style="position:absolute;top:13322;left:172"><nobr><i>on Artificial Intelligence IJCAI-11</i>, pages 662–667, 2011.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13340;left:137"><nobr><b>29</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13340;left:172"><nobr>D. Silver. Cooperative pathfinding. <i>AI Programming Wisdom</i>, 2006.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13359;left:137"><nobr><b>30</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13359;left:172"><nobr>Trevor Scott Standley. Finding optimal solutions to cooperative pathfinding problems. In</nobr></div>
+<div style="position:absolute;top:13378;left:172"><nobr><i>Proceedings of the National Conference on Artificial Intelligence AAAI-10</i>, 2010.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13396;left:137"><nobr><b>31</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13396;left:172"><nobr>Trevor Scott Standley and Richard E. Korf. Complete algorithms for cooperative pathfind-</nobr></div>
+<div style="position:absolute;top:13415;left:172"><nobr>ing problems. In <i>Proceedings of the International Joint Conference on Artificial Intelligence</i></nobr></div>
+<div style="position:absolute;top:13434;left:172"><nobr><i>IJCAI-11</i>, pages 668–673, 2011.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13452;left:137"><nobr><b>32</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13452;left:172"><nobr>N. Sturtevant, A. Felner, M. Barer, J. Schaeffer, and N. Burch. Memory-based heuristics</nobr></div>
+<div style="position:absolute;top:13471;left:172"><nobr>for explicit state spaces. <i>Proceedings of the International Joint Conference on Artificial</i></nobr></div>
+<div style="position:absolute;top:13490;left:172"><nobr><i>Intelligence (IJCAI)</i>, pages 609–614, 2009.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13508;left:137"><nobr><b>33</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13509;left:172"><nobr>Nathan Sturtevant. Memory-efficient abstractions for pathfinding. <i>Proceedings of the Inter-</i></nobr></div>
+<div style="position:absolute;top:13527;left:172"><nobr><i>national Conference on Artificial Intelligence and Interactive Digital Entertainment AIIDE-</i></nobr></div>
+<div style="position:absolute;top:13546;left:172"><nobr><i>07</i>, pages 31–36, 2007.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13564;left:137"><nobr><b>34</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13565;left:172"><nobr>Nathan Sturtevant and Michael Buro. Partial Pathfinding Using Map Abstraction and</nobr></div>
+<div style="position:absolute;top:13583;left:172"><nobr>Refinement. In <i>Proceedings of the National Conference on Artificial Intelligence AAAI-05</i>,</nobr></div>
+<div style="position:absolute;top:13602;left:172"><nobr>pages 47–52, 2005.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13621;left:137"><nobr><b>35</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13621;left:172"><nobr>Nathan Sturtevant and Michael Buro. Improving collaborative pathfinding using map</nobr></div>
+<div style="position:absolute;top:13639;left:172"><nobr>abstraction. In <i>Proceedings of the International Conference on Artificial Intelligence and</i></nobr></div>
+<div style="position:absolute;top:13658;left:172"><nobr><i>Interactive Digital Entertainment (AIIDE)</i>, pages 80–85, 2006.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13677;left:137"><nobr><b>36</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13677;left:172"><nobr>W. van der Sterren. Path Look-Up Tables – Small is Beautiful. In S. Rabin, editor, <i>AI</i></nobr></div>
+<div style="position:absolute;top:13695;left:172"><nobr><i>Game Programming Wisdom 2</i>, pages 115–129, 2003.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13714;left:137"><nobr><b>37</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13714;left:172"><nobr>K.-H. C. Wang and A. Botea. Fast and Memory-Efficient Multi-Agent Pathfinding. In <i>Pro-</i></nobr></div>
+<div style="position:absolute;top:13733;left:172"><nobr><i>ceedings of the International Conference on Automated Planning and Scheduling (ICAPS)</i>,</nobr></div>
+<div style="position:absolute;top:13751;left:172"><nobr>pages 380–387, 2008.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13770;left:137"><nobr><b>38</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13770;left:172"><nobr>K.-H. C. Wang and A. Botea. MAPP: a Scalable Multi-Agent Path Planning Algorithm</nobr></div>
+<div style="position:absolute;top:13789;left:172"><nobr>with Tractability and Completeness Guarantees. <i>Journal of Artificial Intelligence Research</i></nobr></div>
+<div style="position:absolute;top:13807;left:172"><nobr><i>JAIR</i>, 42:55–90, 2011.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13826;left:137"><nobr><b>39</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:13826;left:172"><nobr>Peter Yap, Neil Burch, Robert C. Holte, and Jonathan Schaeffer. Block A*: Database-</nobr></div>
+<div style="position:absolute;top:13845;left:172"><nobr>Driven Search with Applications in Any-Angle Path-Planning. In <i>Proceedings of the Na-</i></nobr></div>
+<div style="position:absolute;top:13863;left:172"><nobr><i>tional Conference on Artificial Intelligence AAAI</i>, 2011.</nobr></div>
+</span></font>
+<font size=3 color="#4f4f54" face="Times"><span style="font-size:12px;font-family:Times;color:#4f4f54">
+<div style="position:absolute;top:13950;left:742"><nobr><b>Chapter 02</b></nobr></div>
+</span></font>
+</body>
+</html>
