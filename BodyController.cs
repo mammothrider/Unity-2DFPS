@@ -44,7 +44,7 @@ public class BodyController : MonoBehaviour {
     protected virtual void OnFixedUpdate() {}
     
     protected void MoveTowards(Vector3 direction) {
-        selfRigidbody.MovePosition(transform.position + direction);
+        selfRigidbody.MovePosition(transform.position + direction.normalized * speed * Time.fixedDeltaTime);
     }
     
     protected void AimAt(Vector3 direction) {
@@ -60,6 +60,11 @@ public class BodyController : MonoBehaviour {
             angle +=  360;
         // transform.eulerAngles = new Vector3(0, 0, -angle);
         selfRigidbody.MoveRotation(-angle);
+    }
+    
+    protected void AimAtPosition(Vector3 position) {
+        Vector3 direction = position - transform.position;
+        AimAt(direction);
     }
     
     protected void GetWeapon(Weapon weapon) {

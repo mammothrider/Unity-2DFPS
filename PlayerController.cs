@@ -9,9 +9,7 @@ public class PlayerController : BodyController {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
         
-        Vector3 direction = (Vector3.up * ver + Vector3.right * hor) * speed * Time.deltaTime;
-        // transform.position += (transform.up * ver + transform.right * hor) * speed * Time.deltaTime;
-        // transform.position += (Vector3.up * ver + Vector3.right * hor) * speed * Time.deltaTime;
+        Vector3 direction = (Vector3.up * ver + Vector3.right * hor);
         MoveTowards(direction);
         // Debug.Log(direction);
         
