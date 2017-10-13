@@ -5,16 +5,18 @@
 //graph flow
 public class GridMap{
 
-    Vector3 size;
+    //basic setting
+    public int gridRow;
+    public int gridCol;
+    public float gridSize;
     
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    //grid map, -1 for unreachable, >0 for moving cost
+    public List<int> gridMap;
+    
+    //node graph
+    public Dictionary<List<int>> nodeGraph;
+    
+    //space tree
+    struct sSpaceTreeNode {};
+    public sSpaceTreeNode rootNode;
 }
